@@ -298,3 +298,4 @@ Thumbs.db
 sh.exe.stackdump
 
 .editorconfig
+/src/SimpleDatabaseBenchmark/appsettings.Development.json

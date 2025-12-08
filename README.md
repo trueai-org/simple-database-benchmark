@@ -38,7 +38,6 @@ SimpleDatabaseBenchmark/
 │       ├── Program.cs        # 程序入口
 │       └── appsettings.json  # 配置文件
 ├── results/                  # 测试报告
-├── logs/                     # 日志文件
 └── README.md
 ```
 

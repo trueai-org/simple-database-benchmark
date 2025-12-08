@@ -50,23 +50,54 @@ SimpleDatabaseBenchmark/
 - 至少一个数据库服务（MySQL/SQL Server/PostgreSQL/MongoDB）
 - SQLite 无需额外安装
 
-### 2.  配置数据库连接
+### 2. 启动数据库
+
+使用 Docker 快速启动所有测试数据库：
+
+```bash
+# Linux/macOS
+chmod +x start.sh
+./start.sh
+
+# Windows (PowerShell)
+.\start.ps1
+```
+
+### 3. 数据库连接信息
+
+| 数据库 | 地址 | 端口 | 用户名 | 密码 | 数据库名 |
+|--------|------|------|--------|------|----------|
+| MySQL | localhost | 33306 | root | 123456 | benchmark_test |
+| SQL Server | localhost | 31433 | sa | Benchmark@123 | benchmark_test |
+| PostgreSQL | localhost | 35432 | postgres | 123456 | benchmark_test |
+| MongoDB | localhost | 37017 | - | - | benchmark_test |
+| SQLite | - | - | - | - | benchmark_test. db |
 
 编辑 `appsettings.json` 文件，配置各数据库的连接字符串：
 
 ```json
 {
-    "ConnectionStrings": {
-    "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=your_password;Charset=utf8mb4;",
-    "SqlServer": "Server=localhost;Database=benchmark_test;User Id=sa;Password=your_password;TrustServerCertificate=True;",
-    "PostgreSql": "Host=localhost;Port=5432;Database=benchmark_test;Username=postgres;Password=your_password;",
+  "ConnectionStrings": {
+    "MySql": "Server=localhost;Port=33306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
+    "SqlServer": "Server=localhost,31433;Database=benchmark_test;User Id=sa;Password=Benchmark@123;TrustServerCertificate=True;",
+    "PostgreSql": "Host=localhost;Port=35432;Database=benchmark_test;Username=postgres;Password=123456;",
     "Sqlite": "Data Source=benchmark_test.db;",
-    "MongoDb": "mongodb://localhost:27017"
+    "MongoDb": "mongodb://localhost:37017"
   }
 }
 ```
 
 > 提示：如果某个数据库未安装，可以将对应的连接字符串留空或删除，程序会自动跳过。
+
+### 4. 停止数据库
+
+```bash
+# Linux/macOS
+./stop.sh
+
+# Windows (PowerShell)
+.\stop.ps1
+```
 
 ### 3.  运行测试
 
@@ -142,5 +173,6 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [2025-12-08 12:14:27](results/benchmark_report_20251208_121427.md) - 基准测试报告
 - [2025-12-08 11:50:01](results/benchmark_report_20251208_115001.md) - 基准测试报告
 <!-- BENCHMARK_RESULTS_END -->

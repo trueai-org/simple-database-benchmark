@@ -589,10 +589,9 @@ public class FreeSqlBenchmarkService : IBenchmarkService
 
     private TestEntity GenerateTestEntity(int index)
     {
-        var guid = Guid.NewGuid().ToString("N"); // 示例: 32 个字符
+        var guid = Guid.NewGuid().ToString("N");
         return new TestEntity
         {
-            // 确保字符串至少有 50 个字符，如果不足，用 '_'
             Name = $"User_{index}_{guid}".PadRight(50, '_').Substring(0, 50),
             Email = $"user{index}@example.com",
             Age = _random.Next(18, 65),

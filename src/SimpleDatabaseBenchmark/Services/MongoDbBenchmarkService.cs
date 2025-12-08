@@ -633,10 +633,11 @@ public class MongoDbBenchmarkService : IBenchmarkService
     private MongoTestEntity GenerateTestEntity(int index)
     {
         var seqId = Interlocked.Increment(ref _sequenceId);
+        var guid = Guid.NewGuid().ToString("N");
         return new MongoTestEntity
         {
             SequenceId = seqId,
-            Name = $"User_{index}_{Guid.NewGuid():N}"[..50],
+            Name = $"User_{index}_{guid}".PadRight(50, '_').Substring(0, 50),
             Email = $"user{index}@example.com",
             Age = _random.Next(18, 65),
             Salary = Math.Round((decimal)(_random.NextDouble() * 100000 + 30000), 2),

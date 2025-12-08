@@ -174,9 +174,5 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
-- [2025-12-08 16:04:41](results/benchmark_report_20251208_160441.md) - 基准测试报告
-- [2025-12-08 16:04:18](results/benchmark_report_20251208_160418.md) - 基准测试报告
-- [2025-12-08 15:52:39](results/benchmark_report_20251208_155239.md) - 基准测试报告
-- [2025-12-08 12:14:27](results/benchmark_report_20251208_121427.md) - 基准测试报告
-- [2025-12-08 11:50:01](results/benchmark_report_20251208_115001.md) - 基准测试报告
+- [2025-12-08 18:21:00](results/benchmark_report_20251208_182100.md) - 基准测试报告
 <!-- BENCHMARK_RESULTS_END -->

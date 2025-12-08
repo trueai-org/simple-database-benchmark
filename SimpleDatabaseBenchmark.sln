@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDatabaseBenchmark", "src\SimpleDatabaseBenchmark\SimpleDatabaseBenchmark.csproj", "{CD48EC92-0476-49CB-DE25-A89FF4B7510B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{9FA3D6BD-1EC1-3BA5-80CB-CE02773A58D5}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD48EC92-0476-49CB-DE25-A89FF4B7510B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD48EC92-0476-49CB-DE25-A89FF4B7510B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD48EC92-0476-49CB-DE25-A89FF4B7510B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD48EC92-0476-49CB-DE25-A89FF4B7510B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {41575FA9-0544-44FB-96E4-C5B136619939}
+	EndGlobalSection
+EndGlobal

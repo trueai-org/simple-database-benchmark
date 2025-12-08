@@ -124,7 +124,7 @@ dotnet run -c Release
 
 ```json
 {
-    "BenchmarkSettings": {
+  "BenchmarkSettings": {
     "SingleOperationCount": 1000,
     "BatchSize": 1000,
     "BatchOperationCount": 10,

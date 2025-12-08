@@ -25,7 +25,7 @@ internal class Program
             .Build();
 
         // 配置 Serilog
-        var logFilePath = Path.Combine(logDirectory, "benchmark_. log");
+        var logFilePath = Path.Combine(logDirectory, "benchmark_.log");
 
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()

@@ -53,6 +53,8 @@ SimpleDatabaseBenchmark/
 
 使用 Docker 快速启动所有测试数据库：
 
+> SQL Server 启动容器后需要手动创建 benchmark_test 数据库。
+
 ```bash
 # Linux/macOS
 chmod +x start.sh
@@ -66,10 +68,10 @@ chmod +x start.sh
 
 | 数据库 | 地址 | 端口 | 用户名 | 密码 | 数据库名 |
 |--------|------|------|--------|------|----------|
-| MySQL | localhost | 33306 | root | 123456 | benchmark_test |
-| SQL Server | localhost | 31433 | sa | Benchmark@123 | benchmark_test |
-| PostgreSQL | localhost | 35432 | postgres | 123456 | benchmark_test |
-| MongoDB | localhost | 37017 | - | - | benchmark_test |
+| MySQL | localhost | 3306 | root | 123456 | benchmark_test |
+| SQL Server | localhost | 1433 | sa | Benchmark@123 | benchmark_test |
+| PostgreSQL | localhost | 5432 | postgres | 123456 | benchmark_test |
+| MongoDB | localhost | 7017 | - | - | benchmark_test |
 | SQLite | - | - | - | - | benchmark_test. db |
 
 编辑 `appsettings.json` 文件，配置各数据库的连接字符串：
@@ -77,11 +79,11 @@ chmod +x start.sh
 ```json
 {
   "ConnectionStrings": {
-    "MySql": "Server=localhost;Port=33306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
-    "SqlServer": "Server=localhost,31433;Database=benchmark_test;User Id=sa;Password=Benchmark@123;TrustServerCertificate=True;",
-    "PostgreSql": "Host=localhost;Port=35432;Database=benchmark_test;Username=postgres;Password=123456;",
+    "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
+    "SqlServer": "Server=localhost,1433;Database=benchmark_test;User Id=sa;Password=Benchmark@123;Persist Security Info=True;TrustServerCertificate=True;",
+    "PostgreSql": "Host=localhost;Port=5432;Database=benchmark_test;Username=postgres;Password=123456;",
     "Sqlite": "Data Source=benchmark_test.db;",
-    "MongoDb": "mongodb://localhost:37017"
+    "MongoDb": "mongodb://localhost:27017"
   }
 }
 ```
@@ -172,6 +174,9 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [2025-12-08 16:04:41](results/benchmark_report_20251208_160441.md) - 基准测试报告
+- [2025-12-08 16:04:18](results/benchmark_report_20251208_160418.md) - 基准测试报告
+- [2025-12-08 15:52:39](results/benchmark_report_20251208_155239.md) - 基准测试报告
 - [2025-12-08 12:14:27](results/benchmark_report_20251208_121427.md) - 基准测试报告
 - [2025-12-08 11:50:01](results/benchmark_report_20251208_115001.md) - 基准测试报告
 <!-- BENCHMARK_RESULTS_END -->

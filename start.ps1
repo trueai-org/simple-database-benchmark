@@ -1,4 +1,7 @@
-# Windows 启动脚本
+﻿# Windows 启动脚本
+
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
 
 Write-Host "启动数据库..."
 docker compose up -d
@@ -21,3 +24,4 @@ Write-Host "  MongoDB:    localhost:27017"
 Write-Host "  SQLite:     自动创建 benchmark_test.db"
 Write-Host ""
 Write-Host "运行测试: dotnet run"
+

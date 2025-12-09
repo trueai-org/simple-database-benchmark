@@ -16,12 +16,12 @@
 
 ### 最终容器状态
 
-| CONTAINER ID | NAME             | CPU % | MEM USAGE / LIMIT     | MEM %  | NET I/O           | BLOCK I/O        | PIDS |
-|--------------|------------------|-------|------------------------|--------|-------------------|------------------|------|
-| 080d4f4aaa3c | bench_postgresql | 0.00% | 54.27MiB / 15.52GiB   | 0.34%  | 50.8MB / 32.6MB   | 10.8MB / 302MB   | 9    |
-| effe122b9b96 | bench_mysql      | 0.23% | 421.5MiB / 15.52GiB   | 2.65%  | 41.9MB / 34.9MB   | 73.9MB / 742MB   | 38   |
-| 107c7ca82e1b | bench_mongodb    | 0.09% | 137.9MiB / 15.52GiB   | 0.87%  | 29.4MB / 41.8MB   | 122MB / 34.9MB   | 43   |
-| 4a38527c9e51 | bench_sqlserver  | 1.15% | 3.251GiB / 15.52GiB   | 20.95% | 144MB / 44.9MB    | 148MB / 403MB    | 321  |
+| NAME             | CPU % | MEM USAGE / LIMIT     | MEM %  | NET I/O           | AVG CPU % |
+|------------------|-------|-----------------------|--------|-------------------|-----------|
+| bench_postgresql | 0.00% | 54.27MiB / 15.52GiB   | 0.34%  | 50.8MB / 32.6MB   | 18%       |
+| bench_mysql      | 0.23% | 421.5MiB / 15.52GiB   | 2.65%  | 41.9MB / 34.9MB   | 16%       |
+| bench_mongodb    | 0.09% | 137.9MiB / 15.52GiB   | 0.87%  | 29.4MB / 41.8MB   | 32%       |
+| bench_sqlserver  | 1.15% | 3.251GiB / 15.52GiB   | 20.95% | 144MB / 44.9MB    | 86%       |
 
 ### 一、单条操作性能 (越小越好)
 
@@ -231,6 +231,8 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [2025-12-09 12:41:11](results/benchmark_report_20251209_124111.md) - 基准测试报告
+- [2025-12-09 12:23:47](results/benchmark_report_20251209_122347.md) - 基准测试报告
 - [2025-12-09 12:07:07](results/benchmark_report_20251209_120707.md) - 基准测试报告
 - [2025-12-09 09:22:18](results/benchmark_report_20251209_092218.md) - 基准测试报告
 - [2025-12-08 18:21:00](results/benchmark_report_20251208_182100.md) - 基准测试报告

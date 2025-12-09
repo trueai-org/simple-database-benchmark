@@ -2,9 +2,19 @@
 
 一个用于对比测试多种数据库性能的 .NET 控制台应用程序。
 
-## 结论
+## 🏆 性能对比分析
 
-### 测试完成容器状态
+### 📈 综合排名
+
+| 排名 | 数据库 | 综合评分 | 适用场景 |
+|------|--------|----------|----------|
+| 🥇 | **MongoDB** | ⭐⭐⭐⭐⭐ | 高并发写入、NoSQL 场景 |
+| 🥈 | **PostgreSQL** | ⭐⭐⭐⭐ | 通用场景、数据分析 |
+| 🥉 | **SQLite** | ⭐⭐⭐⭐ | 轻量级、嵌入式、读多写少 |
+| 4 | **MySQL** | ⭐⭐⭐ | 传统 Web 应用、LAMP 架构 |
+| 5 | **SQL Server** | ⭐⭐⭐ | 企业级 Windows 生态 |
+
+### 最终容器状态
 
 | CONTAINER ID | NAME             | CPU % | MEM USAGE / LIMIT     | MEM %  | NET I/O           | BLOCK I/O        | PIDS |
 |--------------|------------------|-------|------------------------|--------|-------------------|------------------|------|
@@ -12,6 +22,41 @@
 | effe122b9b96 | bench_mysql      | 0.23% | 421.5MiB / 15.52GiB   | 2.65%  | 41.9MB / 34.9MB   | 73.9MB / 742MB   | 38   |
 | 107c7ca82e1b | bench_mongodb    | 0.09% | 137.9MiB / 15.52GiB   | 0.87%  | 29.4MB / 41.8MB   | 122MB / 34.9MB   | 43   |
 | 4a38527c9e51 | bench_sqlserver  | 1.15% | 3.251GiB / 15.52GiB   | 20.95% | 144MB / 44.9MB    | 148MB / 403MB    | 321  |
+
+### 一、单条操作性能 (越小越好)
+
+| 操作 | 🥇 第一名 | 🥈 第二名 | 🥉 第三名 | 最慢 |
+|------|---------|---------|---------|------|
+| **Insert** | MongoDB (251ms) | SQLServer (1131ms) | PostgreSQL (1557ms) | MySQL (4455ms) |
+| **Select** | SQLite (98ms) | PostgreSQL (319ms) | MongoDB (390ms) | SQLServer (984ms) |
+| **Update** | MongoDB (435ms) | PostgreSQL (1603ms) | SQLite (2094ms) | MySQL (5344ms) |
+| **Delete** | MongoDB (381ms) | SQLServer (1141ms) | PostgreSQL (1533ms) | MySQL (6283ms) |
+
+**结论**: 单条操作中，**MongoDB 在写入操作（Insert/Update/Delete）上表现最优**，SQLite 在单条查询上速度最快。
+
+---
+
+### 二、批量操作性能 (越小越好)
+
+| 操作 | 🥇 第一名 | 🥈 第二名 | 🥉 第三名 | 最慢 |
+|------|---------|---------|---------|------|
+| **Insert** | MongoDB (96ms) | MySQL (503ms) | PostgreSQL (517ms) | SQLServer (7907ms) |
+| **Select** | SQLite (16ms) | PostgreSQL (28ms) | SQLServer (48ms) | MongoDB (60ms) |
+| **Update** | MongoDB (585ms) | SQLite (667ms) | MySQL (716ms) | SQLServer (10189ms) |
+| **Delete** | SQLite (38ms) | PostgreSQL (124ms) | MongoDB (141ms) | SQLServer (811ms) |
+
+**结论**: 批量操作中，**MongoDB 批量写入性能卓越**，**SQLite 在批量读取和删除上最快**。
+
+---
+
+### 三、聚合查询性能 (越小越好)
+
+| 操作 | 🥇 第一名 | 🥈 第二名 | 🥉 第三名 |
+|------|---------|---------|---------|
+| **GroupBy** | PostgreSQL (3. 2ms) | SQLite (3.4ms) | MongoDB (9.2ms) |
+| **Statistics** | SQLite (9.6ms) | PostgreSQL (10.8ms) | MongoDB (13.8ms) |
+
+**结论**: **PostgreSQL 和 SQLite 在聚合分析场景表现最优**。
 
 
 ## 功能特点

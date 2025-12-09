@@ -209,7 +209,7 @@ public class BenchmarkRunner
         var serverInfo = ServerInfo.Collect();
         var reportGenerator = new ReportGenerator();
 
-        await reportGenerator.GenerateReportAsync(_allResults, serverInfo);
+        await reportGenerator.GenerateReportAsync(_allResults, serverInfo, _configuration);
 
         _logger.Information("测试报告生成完成");
     }

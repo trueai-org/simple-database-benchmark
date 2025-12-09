@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Microsoft.Extensions.Configuration;
+using Serilog;
 using SimpleDatabaseBenchmark.Models;
 using SimpleDatabaseBenchmark.Utils;
 using System.Text;
@@ -58,7 +59,7 @@ public class ReportGenerator
     /// <summary>
     /// 生成报告
     /// </summary>
-    public async Task GenerateReportAsync(List<BenchmarkResult> results, ServerInfo serverInfo)
+    public async Task GenerateReportAsync(List<BenchmarkResult> results, ServerInfo serverInfo, IConfiguration configuration)
     {
         var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
         var reportFileName = $"benchmark_report_{timestamp}.md";
@@ -73,6 +74,23 @@ public class ReportGenerator
         sb.AppendLine("# 数据库基准测试报告");
         sb.AppendLine();
         sb.AppendLine($"**测试时间**: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        sb.AppendLine();
+
+        // 测试配置
+        var singleCount = configuration.GetValue("BenchmarkSettings:SingleOperationCount", 1000);
+        var batchSize = configuration.GetValue("BenchmarkSettings:BatchSize", 1000);
+        var batchCount = configuration.GetValue("BenchmarkSettings:BatchOperationCount", 10);
+        var warmupIterations = configuration.GetValue("BenchmarkSettings:WarmupIterations", 3);
+        var testIterations = configuration.GetValue("BenchmarkSettings:TestIterations", 5);
+        sb.AppendLine("## 测试配置");
+        sb.AppendLine();
+        sb.AppendLine("| 配置项 | 值 |");
+        sb.AppendLine("|--------|-----|");
+        sb.AppendLine($"| 单次操作记录数 | {singleCount:N0} |");
+        sb.AppendLine($"| 批量操作批次大小 | {batchSize:N0} |");
+        sb.AppendLine($"| 批量操作批次数 | {batchCount:N0} |");
+        sb.AppendLine($"| 预热迭代次数 | {warmupIterations:N0} |");
+        sb.AppendLine($"| 测试迭代次数 | {testIterations:N0} |");
         sb.AppendLine();
 
         // 服务器信息
@@ -543,6 +561,4 @@ public class ReportGenerator
             _logger.Warning(ex, "更新 README 文件失败");
         }
     }
-
-
 }

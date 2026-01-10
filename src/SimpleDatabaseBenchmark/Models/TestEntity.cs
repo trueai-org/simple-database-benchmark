@@ -35,6 +35,50 @@ public class TestEntity
 
     [Column(StringLength = 500)]
     public string Description { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 分类 (用于索引测试)
+    /// </summary>
+    [Column(StringLength = 50)]
+    public string Category { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 状态 (用于索引测试: 0-待处理, 1-处理中, 2-已完成, 3-已取消)
+    /// </summary>
+    public int Status { get; set; }
+
+    /// <summary>
+    /// 评分 (用于范围查询测试)
+    /// </summary>
+    [Column(Precision = 5, Scale = 2)]
+    public decimal Score { get; set; }
+
+    /// <summary>
+    /// 地区 (用于复合索引测试)
+    /// </summary>
+    [Column(StringLength = 50)]
+    public string Region { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 标签 (用于模糊查询测试)
+    /// </summary>
+    [Column(StringLength = 200)]
+    public string Tags { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 优先级 (用于排序和范围查询)
+    /// </summary>
+    public int Priority { get; set; }
+
+    /// <summary>
+    /// 数量 (用于数值范围查询)
+    /// </summary>
+    public int Quantity { get; set; }
+
+    /// <summary>
+    /// 过期时间 (用于时间范围查询)
+    /// </summary>
+    public DateTime? ExpireAt { get; set; }
 }
 
 /// <summary>
@@ -75,6 +119,30 @@ public class MongoTestEntity
 
     [BsonElement("description")]
     public string Description { get; set; } = string.Empty;
+
+    [BsonElement("category")]
+    public string Category { get; set; } = string.Empty;
+
+    [BsonElement("status")]
+    public int Status { get; set; }
+
+    [BsonElement("score")]
+    public decimal Score { get; set; }
+
+    [BsonElement("region")]
+    public string Region { get; set; } = string.Empty;
+
+    [BsonElement("tags")]
+    public string Tags { get; set; } = string.Empty;
+
+    [BsonElement("priority")]
+    public int Priority { get; set; }
+
+    [BsonElement("quantity")]
+    public int Quantity { get; set; }
+
+    [BsonElement("expireAt")]
+    public DateTime? ExpireAt { get; set; }
 }
 
 /// <summary>

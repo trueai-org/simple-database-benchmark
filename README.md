@@ -58,6 +58,29 @@
 
 **结论**: **PostgreSQL 和 SQLite 在聚合分析场景表现最优**。
 
+---
+
+### 四、索引查询性能 (毫秒 - 越小越好)
+
+| 操作类型 | 操作名称 | MongoDB | MySQL | PostgreSQL | SQLite | SQLServer | 最快 |
+|:---------|:---------|-------:|-------:|-------:|-------:|-------:|:-------|
+| IndexQuery | ComplexCondition | 3329.00 | 43911.00 | 3922.00 | 24742.00 | 1481.00 | **SQLServer** |
+| IndexQuery | CompositeIndex_RegionDept | 95.00 | 457.00 | 155.00 | 54.00 | 188.00 | **SQLite** |
+| IndexQuery | CompositeIndex_StatusCatPri | 99.00 | 867.00 | 256.00 | 71.00 | 184.00 | **SQLite** |
+| IndexQuery | NoIndex_FullScan | 4152.00 | 7324.00 | 531.00 | 3023.00 | 2634.00 | **PostgreSQL** |
+| IndexQuery | OrderBy | 36034.00 | 55827.00 | 3952.00 | 28808.00 | 4463.00 | **PostgreSQL** |
+| IndexQuery | Pagination | 204.00 | 345.00 | 75.00 | 90.00 | 231.00 | **PostgreSQL** |
+| IndexQuery | PrefixQuery_Name | 58.00 | 67525.00 | 8984.00 | 24050.00 | 15437.00 | **MongoDB** |
+| IndexQuery | PrimaryKey | 53.00 | 113.00 | 44.00 | 12.00 | 118.00 | **SQLite** |
+| IndexQuery | RangeQuery_Date | 102.00 | 418.00 | 122.00 | 76.00 | 201.00 | **SQLite** |
+| IndexQuery | RangeQuery_Salary | 106.00 | 406.00 | 113.00 | 95.00 | 186.00 | **SQLite** |
+| IndexQuery | RangeQuery_Score | 112.00 | 546.00 | 88.00 | 95.00 | 183.00 | **PostgreSQL** |
+| IndexQuery | SingleIndex_Category | 101.00 | 201.00 | 110.00 | 39.00 | 105.00 | **SQLite** |
+| IndexQuery | SingleIndex_Status | 109.00 | 188.00 | 62.00 | 42.00 | 108.00 | **SQLite** |
+| MillionData | Aggregation | 846.00 | 1550.00 | 282.00 | 366.00 | 457.00 | **PostgreSQL** |
+| MillionData | CreateIndexes | 8988.00 | 25.00 | 11.00 | 5023.00 | 3547.00 | **PostgreSQL** |
+| MillionData | GroupBy | 1175.00 | 1707.00 | 198.00 | 5377.00 | 117.00 | **SQLServer** |
+| MillionData | PrepareData | 8559.00 | 78290.00 | 125044.00 | 103747.00 | 949774.00 | **MongoDB** |
 
 ## 功能特点
 
@@ -67,6 +90,13 @@
   - 批量增删改查
   - 统计汇总 (Count, Sum, Avg, Max, Min)
   - 分组汇总 (Group By)
+- **百万级数据索引测试**:
+  - 主键查询、单字段索引查询、复合索引查询
+  - 范围查询 (评分、日期、薪资)
+  - 前缀模糊查询、分页查询、排序查询
+  - 复杂条件组合查询
+  - 无索引全表扫描对比测试
+  - 百万级数据聚合统计和分组统计
 - **性能监控**: 
   - 操作耗时 (毫秒)
   - 每秒操作数 (OPS)
@@ -179,6 +209,8 @@ dotnet run -c Release
 
 可以在 `appsettings.json` 中调整测试参数：
 
+### 基础测试配置
+
 ```json
 {
   "BenchmarkSettings": {
@@ -198,6 +230,139 @@ dotnet run -c Release
 | `BatchOperationCount` | 批量操作的批次数 | 10 |
 | `WarmupIterations` | 预热迭代次数 | 3 |
 | `TestIterations` | 正式测试迭代次数 | 5 |
+
+### 百万级数据索引测试配置
+
+```json
+{
+  "BenchmarkSettings": {
+    "EnableMillionDataTest": true,
+    "MillionDataCount": 1000000,
+    "MillionBatchSize": 10000,
+    "IndexQueryCount": 100,
+    "PageSize": 100,
+    "PageCount": 100
+  }
+}
+```
+
+| 参数 | 说明 | 默认值 |
+|------|------|--------|
+| `EnableMillionDataTest` | 是否启用百万级数据索引测试 | false |
+| `MillionDataCount` | 百万级测试的总数据量 | 1000000 |
+| `MillionBatchSize` | 百万级数据插入的批次大小 | 10000 |
+| `IndexQueryCount` | 索引查询测试的执行次数 | 100 |
+| `PageSize` | 分页查询测试的每页记录数 | 100 |
+| `PageCount` | 分页查询测试的总页数 | 100 |
+
+### 完整配置示例
+
+```json
+{
+  "ConnectionStrings": {
+    "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
+    "SqlServer": "Data Source=localhost;Initial Catalog=benchmark_test;User ID=sa;Password=Benchmark@123;Persist Security Info=True;TrustServerCertificate=True;",
+    "PostgreSql": "Host=localhost;Port=5432;Database=benchmark_test;Username=postgres;Password=123456;",
+    "Sqlite": "Data Source=benchmark_test.db;",
+    "MongoDb": "mongodb://localhost:27017"
+  },
+  "BenchmarkSettings": {
+    "SingleOperationCount": 1000,
+    "BatchSize": 1000,
+    "BatchOperationCount": 10,
+    "WarmupIterations": 3,
+    "TestIterations": 5,
+
+    "EnableMillionDataTest": true,
+    "MillionDataCount": 1000000,
+    "MillionBatchSize": 10000,
+    "IndexQueryCount": 100,
+    "PageSize": 100,
+    "PageCount": 100
+  },
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "System": "Warning"
+      }
+    }
+  }
+}
+```
+
+> **注意**: 百万级数据测试会消耗较多时间和资源，建议在测试环境中运行。可根据实际需求调整 `MillionDataCount` 参数（如 100000、500000、1000000）。
+
+## 百万级数据索引测试说明
+
+当 `EnableMillionDataTest` 设置为 `true` 时，程序会在常规测试完成后执行以下索引性能测试：
+
+### 测试流程
+
+1. **数据准备**: 批量插入百万级测试数据
+2. **创建索引**: 为各字段创建单字段和复合索引
+3. **索引查询测试**: 执行多种索引查询场景
+4. **聚合统计测试**: 百万级数据聚合和分组统计
+5. **数据清理**: 清理测试数据
+
+### 索引查询测试场景
+
+| 测试类型 | 测试名称 | 说明 |
+|----------|----------|------|
+| **主键查询** | PrimaryKey | 按主键 ID 查询单条记录 |
+| **单字段索引** | SingleIndex_Status | 按状态字段查询 |
+| **单字段索引** | SingleIndex_Category | 按分类字段查询 |
+| **复合索引** | CompositeIndex_RegionDept | 按地区+部门复合条件查询 |
+| **复合索引** | CompositeIndex_StatusCatPri | 按状态+分类+优先级复合条件查询 |
+| **范围查询** | RangeQuery_Score | 按评分范围查询 |
+| **范围查询** | RangeQuery_Date | 按创建时间范围查询 |
+| **范围查询** | RangeQuery_Salary | 按薪资范围查询 |
+| **前缀查询** | PrefixQuery_Name | 按名称前缀模糊查询 |
+| **分页查询** | Pagination | 带排序的分页查询 |
+| **排序查询** | OrderBy | 多字段排序查询 |
+| **复杂查询** | ComplexCondition | 多条件组合查询 |
+| **全表扫描** | NoIndex_FullScan | 无索引字段模糊查询（对比测试） |
+
+### 创建的索引
+
+程序会自动创建以下索引用于测试：
+
+| 索引名称 | 索引字段 | 索引类型 |
+|----------|----------|----------|
+| idx_status | Status | 单字段索引 |
+| idx_category | Category | 单字段索引 |
+| idx_score | Score | 单字段索引 |
+| idx_salary | Salary | 单字段索引 |
+| idx_created_at | CreatedAt | 单字段索引 |
+| idx_priority | Priority | 单字段索引 |
+| idx_name | Name | 单字段索引（前缀） |
+| idx_region_dept | Region, Department | 复合索引 |
+| idx_status_cat_pri | Status, Category, Priority | 复合索引 |
+
+### 测试数据字段
+
+百万级测试数据包含以下字段，用于模拟真实业务场景：
+
+| 字段名 | 类型 | 说明 | 示例值 |
+|--------|------|------|--------|
+| Id | long | 主键自增 ID | 1, 2, 3... |
+| Name | string | 用户名 | User_12345_abc... |
+| Email | string | 邮箱 | user123@example.com |
+| Age | int | 年龄 | 18-65 |
+| Salary | decimal | 薪资 | 30000-130000 |
+| Department | string | 部门 | Engineering, Sales, HR... |
+| Category | string | 分类 | Electronics, Clothing, Food... |
+| Status | int | 状态 | 0-待处理, 1-处理中, 2-已完成, 3-已取消 |
+| Score | decimal | 评分 | 0-100 |
+| Region | string | 地区 | North, South, East, West... |
+| Tags | string | 标签 | hot,new / sale,popular... |
+| Priority | int | 优先级 | 1-5 |
+| Quantity | int | 数量 | 1-1000 |
+| IsActive | bool | 是否激活 | true/false |
+| CreatedAt | DateTime | 创建时间 | 过去一年内随机日期 |
+| ExpireAt | DateTime? | 过期时间 | 未来一年内随机日期或 null |
+| Description | string | 描述 | 测试描述文本 |
 
 ## 测试用例说明
 
@@ -231,6 +396,7 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [百万数据索引性能 - 2026-01-10 17:28:36](results/benchmark_report_20260110_172836.md) - 基准测试报告
 - [50万数据 - 2025-12-09 18:24:49](results/benchmark_report_20251209_182449.md) - 基准测试报告
 - [10万数据 - 2025-12-09 13:22:41](results/benchmark_report_20251209_132241.md) - 基准测试报告
 - [2025-12-09 12:41:11](results/benchmark_report_20251209_124111.md) - 基准测试报告

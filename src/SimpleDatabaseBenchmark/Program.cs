@@ -74,8 +74,17 @@ internal class Program
                 return 1;
             }
 
-            // 运行测试
+            // 运行常规测试
             await runner.RunAllBenchmarksAsync();
+
+            // 检查是否启用百万级数据测试
+            var enableMillionTest = configuration.GetValue("BenchmarkSettings:EnableMillionDataTest", false);
+            if (enableMillionTest)
+            {
+                Log.Information("");
+                Log.Information("========== 百万级数据测试已启用 ==========");
+                await runner.RunMillionDataBenchmarksAsync();
+            }
 
             // 生成报告
             await runner.GenerateReportAsync();

@@ -82,9 +82,9 @@ public interface IBenchmarkService
     Task<BenchmarkResult> PrepareMillionDataAsync(int totalCount, int batchSize);
 
     /// <summary>
-    /// 创建索引
+    /// 创建索引（不计入性能统计）
     /// </summary>
-    Task<BenchmarkResult> CreateIndexesAsync();
+    Task CreateIndexesAsync();
 
     /// <summary>
     /// 主键查询测试 (使用索引)

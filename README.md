@@ -78,7 +78,6 @@
 | IndexQuery | SingleIndex_Category | 101.00 | 201.00 | 110.00 | 39.00 | 105.00 | **SQLite** |
 | IndexQuery | SingleIndex_Status | 109.00 | 188.00 | 62.00 | 42.00 | 108.00 | **SQLite** |
 | MillionData | Aggregation | 846.00 | 1550.00 | 282.00 | 366.00 | 457.00 | **PostgreSQL** |
-| MillionData | CreateIndexes | 8988.00 | 25.00 | 11.00 | 5023.00 | 3547.00 | **PostgreSQL** |
 | MillionData | GroupBy | 1175.00 | 1707.00 | 198.00 | 5377.00 | 117.00 | **SQLServer** |
 | MillionData | PrepareData | 8559.00 | 78290.00 | 125044.00 | 103747.00 | 949774.00 | **MongoDB** |
 

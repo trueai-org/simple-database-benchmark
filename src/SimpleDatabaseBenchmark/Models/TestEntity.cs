@@ -8,6 +8,15 @@ namespace SimpleDatabaseBenchmark.Models;
 /// FreeSql 测试实体
 /// </summary>
 [Table(Name = "test_entity")]
+[Index("idx_status", nameof(Status))]
+[Index("idx_category", nameof(Category))]
+[Index("idx_score", nameof(Score))]
+[Index("idx_salary", nameof(Salary))]
+[Index("idx_created_at", nameof(CreatedAt))]
+[Index("idx_priority", nameof(Priority))]
+[Index("idx_name", nameof(Name))]
+[Index("idx_region_dept", nameof(Region) + "," + nameof(Department))]
+[Index("idx_status_cat_pri", nameof(Status) + "," + nameof(Category) + "," + nameof(Priority))]
 public class TestEntity
 {
     [Column(IsIdentity = true, IsPrimary = true)]
@@ -88,7 +97,7 @@ public class MongoTestEntity
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
+    public string Id { get; set; }
 
     [BsonElement("sequenceId")]
     public long SequenceId { get; set; }
@@ -160,7 +169,7 @@ public class BenchmarkResult
     public long MemoryUsedBytes { get; set; }
     public string MemoryUsedFormatted { get; set; } = string.Empty;
     public bool IsSuccess { get; set; }
-    public string? ErrorMessage { get; set; }
+    public string ErrorMessage { get; set; }
     public DateTime TestTime { get; set; }
 }
 

@@ -38,8 +38,22 @@ public class FreeSqlBenchmarkService : IBenchmarkService
         // 同步表结构
         _freeSql.CodeFirst.SyncStructure<TestEntity>();
 
-        // 清空数据
-        await _freeSql.Delete<TestEntity>().Where("1=1").ExecuteAffrowsAsync();
+        //// 清空数据
+        //await _freeSql.Delete<TestEntity>().Where("1=1").ExecuteAffrowsAsync();
+
+        // 每次删除 1万
+        const int batchSize = 10000;
+        while (true)
+        {
+            var deleted = await _freeSql.Select<TestEntity>()
+                .Where(a => true)  // 或者你的条件
+                .Limit(batchSize)
+                .ToDelete()
+                .ExecuteAffrowsAsync();
+
+            if (deleted == 0)
+                break;
+        }
 
         _logger.Information("数据库初始化完成: {DatabaseName}", DatabaseName);
     }
@@ -623,7 +637,20 @@ public class FreeSqlBenchmarkService : IBenchmarkService
                     .Select(i => GenerateTestEntityWithIndex(batch * batchSize + i))
                     .ToList();
 
-                await _freeSql.Insert(entities).ExecuteAffrowsAsync();
+                // 如果是sqlserver 则使用 BulkCopy 插入以提升性能，否则将会非常慢 100 倍
+                if (DatabaseName == "SQLServer")
+                {
+                    await _freeSql.Insert(entities).ExecuteSqlBulkCopyAsync();
+                }
+                // PG
+                else if (DatabaseName == "PostgreSQL")
+                {
+                    await _freeSql.Insert(entities).ExecutePgCopyAsync();
+                }
+                else
+                {
+                    await _freeSql.Insert(entities).ExecuteAffrowsAsync();
+                }
 
                 if ((batch + 1) % 100 == 0)
                 {
@@ -1470,7 +1497,23 @@ public class FreeSqlBenchmarkService : IBenchmarkService
     public async Task CleanupMillionDataAsync()
     {
         _logger.Information("[{Database}] 清理百万级测试数据", DatabaseName);
-        await _freeSql.Delete<TestEntity>().Where("1=1").ExecuteAffrowsAsync();
+
+        //await _freeSql.Delete<TestEntity>().Where("1=1").ExecuteAffrowsAsync();
+
+        // 每次删除 1万
+        const int batchSize = 10000;
+        while (true)
+        {
+            var deleted = await _freeSql.Select<TestEntity>()
+                .Where(a => true)  // 或者你的条件
+                .Limit(batchSize)
+                .ToDelete()
+                .ExecuteAffrowsAsync();
+
+            if (deleted == 0)
+                break;
+        }
+
         _logger.Information("[{Database}] 百万级测试数据清理完成", DatabaseName);
     }
 

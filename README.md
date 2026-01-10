@@ -395,6 +395,7 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [2026-01-10 19:03:58](results/benchmark_report_20260110_190358.md) - 基准测试报告
 - [百万数据索引性能 - 2026-01-10 17:28:36](results/benchmark_report_20260110_172836.md) - 基准测试报告
 - [50万数据 - 2025-12-09 18:24:49](results/benchmark_report_20251209_182449.md) - 基准测试报告
 - [10万数据 - 2025-12-09 13:22:41](results/benchmark_report_20251209_132241.md) - 基准测试报告

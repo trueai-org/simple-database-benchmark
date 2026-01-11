@@ -7,7 +7,23 @@ services:
       MYSQL_DATABASE: benchmark_test
     ports:
       - "3306:3306"
-    command: --default-authentication-plugin=mysql_native_password
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --innodb_buffer_pool_size=2G
+      --innodb_log_file_size=512M
+
+  mariadb:
+    image: mariadb:11
+    container_name: bench_mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: 123456
+      MARIADB_DATABASE: benchmark_test
+    ports:
+      - "3307:3306"
+    command: >
+      --innodb_buffer_pool_size=2G
+      --innodb_log_file_size=512M
+
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest

@@ -52,6 +52,23 @@ public class BenchmarkRunner
             }
         }
 
+        // MariaDB
+        var mariaDbConnStr = _configuration.GetConnectionString("MariaDb");
+        if (!string.IsNullOrEmpty(mariaDbConnStr))
+        {
+            try
+            {
+                var mariaDbService = new FreeSqlBenchmarkService("MariaDB", DataType.MySql, mariaDbConnStr);
+                await mariaDbService.InitializeAsync();
+                _services.Add(mariaDbService);
+                _logger.Information("MariaDB 服务初始化成功");
+            }
+            catch (Exception ex)
+            {
+                _logger.Warning(ex, "MariaDB 服务初始化失败，跳过该数据库测试");
+            }
+        }
+
         // SQL Server
         var sqlServerConnStr = _configuration.GetConnectionString("SqlServer");
         if (!string.IsNullOrEmpty(sqlServerConnStr))

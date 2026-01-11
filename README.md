@@ -11,17 +11,19 @@
 | 🥇 | **MongoDB** | ⭐⭐⭐⭐⭐ | 高并发写入、NoSQL 场景 |
 | 🥈 | **PostgreSQL** | ⭐⭐⭐⭐ | 通用场景、数据分析 |
 | 🥉 | **SQLite** | ⭐⭐⭐⭐ | 轻量级、嵌入式、读多写少 |
-| 4 | **MySQL** | ⭐⭐⭐ | 传统 Web 应用、LAMP 架构 |
-| 5 | **SQL Server** | ⭐⭐⭐ | 企业级 Windows 生态 |
+| 4 | **MariaDB** | ⭐⭐⭐⭐ | 略优于 MySQL |
+| 5 | **MySQL** | ⭐⭐⭐ | 传统 Web 应用、LAMP 架构 |
+| 6 | **SQL Server** | ⭐⭐⭐ | 企业级 Windows 生态 |
 
 ### 最终容器状态
 
-| NAME             | CPU % | MEM USAGE / LIMIT     | MEM %  | NET I/O           | AVG CPU % |
-|------------------|-------|-----------------------|--------|-------------------|-----------|
-| bench_postgresql | 0.00% | 54.27MiB / 15.52GiB   | 0.34%  | 50.8MB / 32.6MB   | 18%       |
-| bench_mysql      | 0.23% | 421.5MiB / 15.52GiB   | 2.65%  | 41.9MB / 34.9MB   | 16%       |
-| bench_mongodb    | 0.09% | 137.9MiB / 15.52GiB   | 0.87%  | 29.4MB / 41.8MB   | 32%       |
-| bench_sqlserver  | 1.15% | 3.251GiB / 15.52GiB   | 20.95% | 144MB / 44.9MB    | 86%       |
+| NAME             | MEM USAGE / LIMIT     | AVG CPU % |
+|------------------|-----------------------|-----------|
+| bench_postgresql | 196.8MiB / 15.52GiB   | 20%       |
+| bench_mysql      | 556.1MiB / 15.52GiB   | 16%       |
+| bench_mongodb    | 137.9MiB / 15.52GiB   | 32%       |
+| bench_sqlserver  | 3.251GiB / 15.52GiB   | 86%       |
+| bench_mariadb    | 842.9MiB / 15.52GiB   | 16%       |
 
 ### 一、单条操作性能 (越小越好)
 
@@ -83,7 +85,7 @@
 
 ## 功能特点
 
-- **支持多种数据库**: MySQL, SQL Server, PostgreSQL, SQLite, MongoDB
+- **支持多种数据库**: MySQL, MariaDB, SQL Server, PostgreSQL, SQLite, MongoDB
 - **多种测试场景**: 
   - 单条增删改查 (CRUD)
   - 批量增删改查
@@ -107,7 +109,7 @@
 ## 技术栈
 
 - **.NET 8.0**
-- **FreeSql**: MySQL, SQL Server, PostgreSQL, SQLite 的 ORM
+- **FreeSql**: MySQL, MariaDB, SQL Server, PostgreSQL, SQLite 的 ORM
 - **MongoDB Driver**: MongoDB 官方驱动
 - **Serilog**: 日志框架
 
@@ -155,10 +157,11 @@ chmod +x start.sh
 | 数据库 | 地址 | 端口 | 用户名 | 密码 | 数据库名 |
 |--------|------|------|--------|------|----------|
 | MySQL | localhost | 3306 | root | 123456 | benchmark_test |
+| MariaDB | localhost | 3307 | root | 123456 | benchmark_test |
 | SQL Server | localhost | 1433 | sa | Benchmark@123 | benchmark_test |
 | PostgreSQL | localhost | 5432 | postgres | 123456 | benchmark_test |
-| MongoDB | localhost | 7017 | - | - | benchmark_test |
-| SQLite | - | - | - | - | benchmark_test. db |
+| MongoDB | localhost | 27017 | - | - | benchmark_test |
+| SQLite | - | - | - | - | benchmark_test.db |
 
 编辑 `appsettings.json` 文件，配置各数据库的连接字符串：
 
@@ -166,6 +169,7 @@ chmod +x start.sh
 {
   "ConnectionStrings": {
     "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
+    "MariaDb": "Server=localhost;Port=3307;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
     "SqlServer": "Server=localhost,1433;Database=benchmark_test;User Id=sa;Password=Benchmark@123;Persist Security Info=True;TrustServerCertificate=True;",
     "PostgreSql": "Host=localhost;Port=5432;Database=benchmark_test;Username=postgres;Password=123456;",
     "Sqlite": "Data Source=benchmark_test.db;",
@@ -260,6 +264,7 @@ dotnet run -c Release
 {
   "ConnectionStrings": {
     "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
+    "MariaDb": "Server=localhost;Port=3307;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
     "SqlServer": "Data Source=localhost;Initial Catalog=benchmark_test;User ID=sa;Password=Benchmark@123;Persist Security Info=True;TrustServerCertificate=True;",
     "PostgreSql": "Host=localhost;Port=5432;Database=benchmark_test;Username=postgres;Password=123456;",
     "Sqlite": "Data Source=benchmark_test.db;",
@@ -395,6 +400,7 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [MariaDB 2026-01-12 01:03:27](results/benchmark_report_20260112_010326.md) - 基准测试报告
 - [PG VS 其他 2026-01-11 11:05:26](results/benchmark_report_20260111_110526.md) - 基准测试报告
 - [PG VS SQLServer 2026-01-11 02:24:20](results/benchmark_report_20260111_022420.md) - 基准测试报告
 - [2026-01-10 19:03:58](results/benchmark_report_20260110_190358.md) - 基准测试报告

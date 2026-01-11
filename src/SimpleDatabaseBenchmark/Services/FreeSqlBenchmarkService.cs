@@ -649,7 +649,8 @@ public class FreeSqlBenchmarkService : IBenchmarkService
                 }
                 else
                 {
-                    await _freeSql.Insert(entities).ExecuteAffrowsAsync();
+                    //await _freeSql.Insert(entities).ExecuteAffrowsAsync();
+                    await _freeSql.Insert(entities).ExecuteSqlBulkCopyAsync();
                 }
 
                 if ((batch + 1) % 100 == 0)

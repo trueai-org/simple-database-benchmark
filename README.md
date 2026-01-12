@@ -391,7 +391,10 @@ dotnet run -c Release
 | **排序查询** | OrderBy | 多字段排序查询 |
 | **复杂查询** | ComplexCondition | 多条件组合查询 |
 | **全表扫描** | NoIndex_FullScan | 无索引字段模糊查询（对比测试） |
-| **数据清理** | MillionData_Cleanup | 百万级数据清理（删除所有测试数据） |
+| **百万数据清理** | MillionData_Cleanup | 百万级数据清理（删除所有测试数据） |
+| **百万数据分组** | MillionData_GroupBy | 百万级数据按分组统计 |
+| **百万数据聚合** | MillionData_Aggregation | 百万级数据聚合统计 |
+| **百万数据准备** | MillionData_PrepareData | 批量插入百万级测试数据 |
 
 ### 创建的索引
 

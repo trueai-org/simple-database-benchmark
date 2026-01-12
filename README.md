@@ -166,6 +166,7 @@ SimpleDatabaseBenchmark/
 ### 1. 环境要求/准备
 
 - .NET 8.0
+- 数据库服务统一限制内存 4G
 - 至少一个数据库服务（MySQL/MariaDB/SQL Server/PostgreSQL/MongoDB）
 - SQLite 无需额外安装
 - MySQL/MariaDB 配置 1G buffer pool，并开启 local_infile

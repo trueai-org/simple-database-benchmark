@@ -11,6 +11,10 @@ services:
       --local-infile=1
       --innodb_buffer_pool_size=1G
       --innodb_redo_log_capacity=512M
+    deploy:
+      resources:
+        limits:
+          memory: 4g
 
   mariadb:
     image: mariadb:11
@@ -24,6 +28,10 @@ services:
       --local-infile=1
       --innodb_buffer_pool_size=1G
       --innodb_log_file_size=256M
+    deploy:
+      resources:
+        limits:
+          memory: 4g
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -36,7 +44,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 2g
+          memory: 4g
 
   postgresql:
     image: postgres:18-alpine
@@ -50,12 +58,20 @@ services:
       - "postgres"
       - "-c"
       - "shared_buffers=1GB"
+    deploy:
+      resources:
+        limits:
+          memory: 4g
 
   mongodb:
     image: mongo:8.0
     container_name: bench_mongodb
     ports:
       - "27017:27017"
+    deploy:
+      resources:
+        limits:
+          memory: 4g
 
   oracle:
     image: gvenzl/oracle-free:23-slim
@@ -67,3 +83,7 @@ services:
     ports:
       - "1521:1521"
     shm_size: 2g
+    deploy:
+      resources:
+        limits:
+          memory: 4g

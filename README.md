@@ -28,8 +28,10 @@
 | bench_postgresql | 710.0MiB / 15.52GiB   | 20%       |
 | bench_mysql      | 1.342GiB / 15.52GiB   | 16%       |
 | bench_mongodb    | 904.8MiB / 15.52GiB   | 32%       |
-| bench_sqlserver  | 4.582GiB / 15.52GiB   | 86%       |
-| bench_mariadb    | 798.2MiB / 15.52GiB   | 13%       |
+| bench_sqlserver  | 4.582GiB / 15.52GiB   | 80%       |
+| bench_mariadb    | 798.2MiB / 15.52GiB   | 19%       |
+| bench_oracle     | 798.2MiB / 15.52GiB   | 43%       |
+
 
 ### 单条/批量/聚合/百万数据索引性能 (毫秒 - 越小越好)
 
@@ -166,7 +168,7 @@ SimpleDatabaseBenchmark/
 ### 1. 环境要求/准备
 
 - .NET 8.0
-- 数据库服务统一限制内存 4G
+- 数据库服务统一限制内存 8G
 - 至少一个数据库服务（MySQL/MariaDB/SQL Server/PostgreSQL/MongoDB）
 - SQLite 无需额外安装
 - MySQL/MariaDB 配置 1G buffer pool，并开启 local_infile
@@ -459,6 +461,7 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [2026-01-12 19:45:45](results/benchmark_report_20260112_194545.md) - 基准测试报告
 - [2026-01-12 18:31:35](results/benchmark_report_20260112_183135.md) - 基准测试报告
 - [2026-01-12 18:19:07](results/benchmark_report_20260112_181907.md) - 基准测试报告
 - [2026-01-12 17:40:51](results/benchmark_report_20260112_174051.md) - 基准测试报告
@@ -478,5 +481,4 @@ MIT License
 - [10万数据 - 2025-12-09 13:22:41](results/benchmark_report_20251209_132241.md) - 基准测试报告
 - [2025-12-09 12:41:11](results/benchmark_report_20251209_124111.md) - 基准测试报告
 - [2025-12-09 12:23:47](results/benchmark_report_20251209_122347.md) - 基准测试报告
-- [2025-12-09 12:07:07](results/benchmark_report_20251209_120707.md) - 基准测试报告
 <!-- BENCHMARK_RESULTS_END -->

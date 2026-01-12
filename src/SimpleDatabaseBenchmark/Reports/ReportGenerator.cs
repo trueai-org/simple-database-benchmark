@@ -91,7 +91,24 @@ public class ReportGenerator
         sb.AppendLine($"| 批量操作批次数 | {batchCount:N0} |");
         sb.AppendLine($"| 预热迭代次数 | {warmupIterations:N0} |");
         sb.AppendLine($"| 测试迭代次数 | {testIterations:N0} |");
+
+        // 百万级测试配置
+        var enableMillionDataTest = configuration.GetValue("BenchmarkSettings:EnableMillionDataTest", false);
+        var millionDataCount = configuration.GetValue("BenchmarkSettings:MillionDataCount", 1000000);
+        var millionBatchSize = configuration.GetValue("BenchmarkSettings:MillionBatchSize", 10000);
+        var indexQueryCount = configuration.GetValue("BenchmarkSettings:IndexQueryCount", 100);
+        var pageSize = configuration.GetValue("BenchmarkSettings:PageSize", 100);
+        var pageCount = configuration.GetValue("BenchmarkSettings:PageCount", 100);
+
+        sb.AppendLine($"| 启用百万级测试 | {(enableMillionDataTest ? "是" : "否")} |");
+        sb.AppendLine($"| 百万级数据量 | {millionDataCount:N0} |");
+        sb.AppendLine($"| 百万级批次大小 | {millionBatchSize:N0} |");
+        sb.AppendLine($"| 索引查询次数 | {indexQueryCount:N0} |");
+        sb.AppendLine($"| 分页大小 | {pageSize:N0} |");
+        sb.AppendLine($"| 分页次数 | {pageCount:N0} |");
+
         sb.AppendLine();
+
 
         // 服务器信息
         sb.AppendLine(serverInfo.ToMarkdown());

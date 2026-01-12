@@ -14,7 +14,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 4g
+          memory: 8g
 
   mariadb:
     image: mariadb:11
@@ -31,7 +31,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 4g
+          memory: 8g
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -44,7 +44,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 4g
+          memory: 8g
 
   postgresql:
     image: postgres:18-alpine
@@ -61,7 +61,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 4g
+          memory: 8g
 
   mongodb:
     image: mongo:8.0
@@ -71,7 +71,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 4g
+          memory: 8g
 
   oracle:
     image: gvenzl/oracle-free:23-slim
@@ -86,4 +86,4 @@ services:
     deploy:
       resources:
         limits:
-          memory: 4g
+          memory: 8g

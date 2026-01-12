@@ -457,9 +457,23 @@ dotnet run -c Release
 ## 注意事项
 
 1. 测试前请确保数据库服务已启动
-2.  请在测试环境运行，避免影响生产数据
-3.  首次运行会自动创建测试数据库和表
+2. 请在测试环境运行，避免影响生产数据
+3. 首次运行会自动创建测试数据库和表
 4. 每轮测试前会清空测试数据
+
+## 性能参数
+
+```bask
+# 数据库参数说明
+# Buffer Pool（数据库专用服务器）
+innodb_buffer_pool_size = 服务器内存 × 0.7
+
+# Log File Size (MariaDB 11)
+innodb_log_file_size = innodb_buffer_pool_size × 0.25
+
+# Redo Log Capacity (MySQL 8.4) 
+innodb_redo_log_capacity = innodb_log_file_size × 2
+```
 
 ## 许可证
 

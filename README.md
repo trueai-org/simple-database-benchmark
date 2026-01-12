@@ -20,51 +20,51 @@
 | 4 | **MariaDB 11** | ⭐⭐⭐⭐ | 略优于 MySQL |
 | 5 | **MySQL 8.4** | ⭐⭐⭐⭐ | 传统 Web 应用 |
 | 6 | **SQL Server 2022** | ⭐⭐⭐ | 企业级 Windows 生态 |
+| 7 | **Oracle 23** | ⭐⭐⭐ | 大型企业应用 |
 
 ### 最终容器状态
 
-| NAME             | MEM USAGE / LIMIT     | AVG CPU % |
-|------------------|-----------------------|-----------|
-| bench_postgresql | 710.0MiB / 15.52GiB   | 20%       |
-| bench_mysql      | 1.342GiB / 15.52GiB   | 16%       |
-| bench_mongodb    | 904.8MiB / 15.52GiB   | 32%       |
-| bench_sqlserver  | 4.582GiB / 15.52GiB   | 80%       |
-| bench_mariadb    | 798.2MiB / 15.52GiB   | 19%       |
-| bench_oracle     | 798.2MiB / 15.52GiB   | 43%       |
+| NAME             | MEM USAGE / LIMIT | AVG CPU % |
+|------------------|-------------------|-----------|
+| bench_mongodb    | 281.6MiB / 8GiB   | 32%       |
+| bench_postgresql | 642.4MiB / 8GiB   | 20%       |
+| bench_mariadb    | 787.0MiB / 8GiB   | 19%       |
+| bench_mysql      | 1.313GiB / 8GiB   | 16%       |
+| bench_oracle     | 1.892GiB / 8GiB   | 43%       |
+| bench_sqlserver  | 4.151GiB / 8GiB   | 80%       |
 
 
 ### 单条/批量/聚合/百万数据索引性能 (毫秒 - 越小越好)
 
-| 操作类型 | 操作名称 | MariaDB | MongoDB | MySQL | PostgreSQL | SQLite | SQLServer | 最快 |
-|:---------|:---------|-------:|-------:|-------:|-------:|-------:|-------:|:-------|
-| Aggregation | GroupBy | 3.00 | 3.40 | 4.80 | 1.60 | 2.60 | 30.00 | **PostgreSQL** |
-| Aggregation | Statistics | 5.40 | 7.80 | 10.00 | 5.80 | 2.40 | 9.00 | **SQLite** |
-| Batch | Delete | 58.80 | 38.20 | 103.00 | 18.80 | 59.40 | 210.40 | **PostgreSQL** |
-| Batch | Insert | 1611.40 | 44.80 | 1669.00 | 1026.60 | 960.80 | 4861.80 | **MongoDB** |
-| Batch | Select | 12.80 | 31.20 | 14.00 | 70.60 | 20.00 | 18.40 | **MariaDB** |
-| Batch | Update | 1607.20 | 209.60 | 1561.60 | 657.80 | 508.80 | 2587.60 | **MongoDB** |
-| IndexQuery | ComplexCondition | 9835.00 | 3454.00 | 2509.00 | 228.00 | 59587.00 | 1657.00 | **PostgreSQL** |
-| IndexQuery | CompositeIndex_RegionDept | 84.00 | 115.00 | 99.00 | 61.00 | 108.00 | 174.00 | **PostgreSQL** |
-| IndexQuery | CompositeIndex_StatusCatPri | 102.00 | 119.00 | 116.00 | 78.00 | 148.00 | 190.00 | **PostgreSQL** |
-| IndexQuery | NoIndex_FullScan | 5554.00 | 4407.00 | 5506.00 | 504.00 | 6812.00 | 2574.00 | **PostgreSQL** |
-| IndexQuery | OrderBy | 10171.00 | 35597.00 | 47196.00 | 2076.00 | 65124.00 | 4118.00 | **PostgreSQL** |
-| IndexQuery | Pagination | 166.00 | 228.00 | 240.00 | 79.00 | 205.00 | 225.00 | **PostgreSQL** |
-| IndexQuery | PrefixQuery_Name | 42734.00 | 64.00 | 58388.00 | 6621.00 | 57473.00 | 15750.00 | **MongoDB** |
-| IndexQuery | PrimaryKey | 55.00 | 55.00 | 54.00 | 43.00 | 24.00 | 110.00 | **SQLite** |
-| IndexQuery | RangeQuery_Date | 91.00 | 126.00 | 105.00 | 70.00 | 159.00 | 192.00 | **PostgreSQL** |
-| IndexQuery | RangeQuery_Salary | 97.00 | 128.00 | 109.00 | 68.00 | 194.00 | 186.00 | **PostgreSQL** |
-| IndexQuery | RangeQuery_Score | 100.00 | 133.00 | 107.00 | 65.00 | 188.00 | 187.00 | **PostgreSQL** |
-| IndexQuery | SingleIndex_Category | 81.00 | 124.00 | 101.00 | 60.00 | 74.00 | 109.00 | **PostgreSQL** |
-| IndexQuery | SingleIndex_Status | 87.00 | 133.00 | 98.00 | 55.00 | 76.00 | 423.00 | **PostgreSQL** |
-| MillionData | Aggregation | 447.00 | 861.00 | 469.00 | 196.00 | 855.00 | 442.00 | **PostgreSQL** |
-| MillionData | Cleanup | 18131.00 | 21389.00 | 22815.00 | 4618.00 | 112386.00 | 22358.00 | **PostgreSQL** |
-| MillionData | GroupBy | 1780.00 | 1166.00 | 2572.00 | 190.00 | 13014.00 | 115.00 | **SQLServer** |
-| MillionData | PrepareData | 24261.00 | 10782.00 | 31143.00 | 34033.00 | 154887.00 | 30428.00 | **MongoDB** |
-| Single | Delete | 1108.00 | 540.80 | 2703.00 | 891.40 | 3308.60 | 1560.40 | **MongoDB** |
-| Single | Insert | 1288.60 | 389.80 | 2738.00 | 1057.00 | 3342.60 | 1537.20 | **MongoDB** |
-| Single | Select | 507.60 | 533.60 | 567.00 | 397.40 | 235.60 | 1077.60 | **SQLite** |
-| Single | Update | 1469.40 | 593.80 | 2862.60 | 1110.40 | 3394.00 | 4563.80 | **MongoDB** |
-
+| 操作类型 | 操作名称 | MariaDB | MongoDB | MySQL | Oracle | PostgreSQL | SQLite | SQLServer | 最快 |
+|:---------|:---------|-------:|-------:|-------:|-------:|-------:|-------:|-------:|:-------|
+| Aggregation | GroupBy | 3.20 | 2.60 | 6.20 | 2.20 | 1.80 | 2.00 | 31.40 | **PostgreSQL** |
+| Aggregation | Statistics | 5.60 | 6.00 | 13.00 | 7.00 | 6.20 | 1.80 | 9.00 | **SQLite** |
+| Batch | Delete | 55.00 | 30.40 | 98.60 | 498.80 | 18.40 | 54.20 | 212.00 | **PostgreSQL** |
+| Batch | Insert | 1445.40 | 32.20 | 1632.80 | 4409.20 | 577.60 | 843.20 | 4813.60 | **MongoDB** |
+| Batch | Select | 10.80 | 25.20 | 14.80 | 44.20 | 70.80 | 15.80 | 15.60 | **MariaDB** |
+| Batch | Update | 1420.40 | 146.20 | 1516.00 | 4618.80 | 359.00 | 423.40 | 2645.40 | **MongoDB** |
+| IndexQuery | ComplexCondition | 10160.00 | 3736.00 | 1559.00 | 1664.00 | 4427.00 | 58613.00 | 1190.00 | **SQLServer** |
+| IndexQuery | CompositeIndex_RegionDept | 90.00 | 102.00 | 94.00 | 561.00 | 63.00 | 104.00 | 188.00 | **PostgreSQL** |
+| IndexQuery | CompositeIndex_StatusCatPri | 107.00 | 96.00 | 101.00 | 605.00 | 71.00 | 148.00 | 197.00 | **PostgreSQL** |
+| IndexQuery | NoIndex_FullScan | 5892.00 | 2869.00 | 5511.00 | 2482.00 | 516.00 | 6717.00 | 2476.00 | **PostgreSQL** |
+| IndexQuery | OrderBy | 10174.00 | 25846.00 | 47402.00 | 32376.00 | 3900.00 | 61260.00 | 4186.00 | **PostgreSQL** |
+| IndexQuery | Pagination | 182.00 | 166.00 | 254.00 | 388.00 | 79.00 | 102.00 | 272.00 | **PostgreSQL** |
+| IndexQuery | PrefixQuery_Name | 42167.00 | 54.00 | 60472.00 | 21074.00 | 7745.00 | 37612.00 | 15196.00 | **MongoDB** |
+| IndexQuery | PrimaryKey | 57.00 | 55.00 | 63.00 | 207.00 | 45.00 | 24.00 | 115.00 | **SQLite** |
+| IndexQuery | RangeQuery_Date | 89.00 | 99.00 | 96.00 | 701.00 | 64.00 | 161.00 | 200.00 | **PostgreSQL** |
+| IndexQuery | RangeQuery_Salary | 96.00 | 107.00 | 104.00 | 1634.00 | 82.00 | 189.00 | 192.00 | **PostgreSQL** |
+| IndexQuery | RangeQuery_Score | 98.00 | 107.00 | 116.00 | 1733.00 | 84.00 | 188.00 | 192.00 | **PostgreSQL** |
+| IndexQuery | SingleIndex_Category | 82.00 | 112.00 | 88.00 | 1190.00 | 741.00 | 73.00 | 121.00 | **SQLite** |
+| IndexQuery | SingleIndex_Status | 86.00 | 115.00 | 88.00 | 116.00 | 1106.00 | 75.00 | 428.00 | **SQLite** |
+| MillionData | Aggregation | 454.00 | 561.00 | 478.00 | 269.00 | 197.00 | 834.00 | 456.00 | **PostgreSQL** |
+| MillionData | Cleanup | 18202.00 | 14862.00 | 25360.00 | 1838724.00 | 3699.00 | 132571.00 | 21157.00 | **PostgreSQL** |
+| MillionData | GroupBy | 1767.00 | 997.00 | 2645.00 | 1423.00 | 174.00 | 12615.00 | 116.00 | **SQLServer** |
+| MillionData | PrepareData | 24269.00 | 9346.00 | 25807.00 | 1759340.00 | 34346.00 | 139529.00 | 30947.00 | **MongoDB** |
+| Single | Delete | 1092.20 | 538.40 | 2711.60 | 1609.20 | 847.60 | 3140.00 | 1567.60 | **MongoDB** |
+| Single | Insert | 1189.00 | 393.80 | 2789.80 | 1142.00 | 971.00 | 3115.20 | 1516.40 | **MongoDB** |
+| Single | Select | 508.00 | 526.60 | 582.80 | 1013.20 | 394.40 | 193.80 | 1063.40 | **SQLite** |
+| Single | Update | 1357.80 | 585.80 | 2885.40 | 1767.20 | 993.60 | 3142.20 | 4297.00 | **MongoDB** |
 
 
 ## 🔴 存在明显性能问题的数据库
@@ -165,17 +165,17 @@ SimpleDatabaseBenchmark/
 
 ## 快速开始
 
-### 1. 环境要求/准备
+### 1. 环境要求/准备/规则
 
 - .NET 8.0
 - 数据库服务统一限制内存 8G
-- 至少一个数据库服务（MySQL/MariaDB/SQL Server/PostgreSQL/MongoDB）
+- 至少一个数据库服务（MySQL/MariaDB/SQL Server/PostgreSQL/MongoDB/Oracle）
 - SQLite 无需额外安装
 - MySQL/MariaDB 配置 1G buffer pool，并开启 local_infile
 - PostgreSQL shared_buffers 配置为 1G
 - SQL Server 如果不是通过脚本启动，请手动创建数据库 benchmark_test
 - 完全模拟生产环境
-- 初始化百万数据默认使用 BulkCopy 方式插入，Oracle 采用批量插入方式
+- 初始化百万数据默认使用 BulkCopy 方式插入，Oracle 采用普通批量插入（非常慢）
 
 ### 2. 启动数据库
 
@@ -461,6 +461,7 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [2026-01-12 23:44:00](results/benchmark_report_20260112_234400.md) - 基准测试报告
 - [2026-01-12 19:45:45](results/benchmark_report_20260112_194545.md) - 基准测试报告
 - [2026-01-12 18:31:35](results/benchmark_report_20260112_183135.md) - 基准测试报告
 - [2026-01-12 18:19:07](results/benchmark_report_20260112_181907.md) - 基准测试报告
@@ -480,5 +481,4 @@ MIT License
 - [50万数据 - 2025-12-09 18:24:49](results/benchmark_report_20251209_182449.md) - 基准测试报告
 - [10万数据 - 2025-12-09 13:22:41](results/benchmark_report_20251209_132241.md) - 基准测试报告
 - [2025-12-09 12:41:11](results/benchmark_report_20251209_124111.md) - 基准测试报告
-- [2025-12-09 12:23:47](results/benchmark_report_20251209_122347.md) - 基准测试报告
 <!-- BENCHMARK_RESULTS_END -->

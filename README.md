@@ -4,16 +4,18 @@
 
 ## 🏆 性能对比分析
 
+*提醒*：MySQL/MariaDB 配置 1G buffer pool，并开启 local_infile
+
 ### 📈 综合排名
 
 | 排名 | 数据库 | 综合评分 | 适用场景 |
 |------|--------|----------|----------|
-| 🥇 | **MongoDB** | ⭐⭐⭐⭐⭐ | 高并发写入、NoSQL 场景、10万/s |
-| 🥈 | **PostgreSQL** | ⭐⭐⭐⭐⭐ | 通用场景、数据分析 |
-| 🥉 | **SQLite** | ⭐⭐⭐⭐ | 轻量级、嵌入式、读多写少 |
-| 4 | **MariaDB** | ⭐⭐⭐⭐ | 略优于 MySQL |
-| 5 | **MySQL** | ⭐⭐⭐⭐ | 传统 Web 应用、LAMP 架构 |
-| 6 | **SQL Server** | ⭐⭐⭐ | 企业级 Windows 生态 |
+| 🥇 | **MongoDB 8.0** | ⭐⭐⭐⭐⭐ | 高并发写入、NoSQL 场景、10万+/s |
+| 🥈 | **PostgreSQL 18** | ⭐⭐⭐⭐⭐ | 通用场景、数据分析 |
+| 🥉 | **SQLite 3** | ⭐⭐⭐⭐ | 轻量级、嵌入式、读多写少 |
+| 4 | **MariaDB 11** | ⭐⭐⭐⭐ | 略优于 MySQL |
+| 5 | **MySQL 8.4** | ⭐⭐⭐⭐ | 传统 Web 应用 |
+| 6 | **SQL Server 2022** | ⭐⭐⭐ | 企业级 Windows 生态 |
 
 ### 最终容器状态
 
@@ -195,8 +197,8 @@ chmod +x start.sh
 ```json
 {
   "ConnectionStrings": {
-    "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
-    "MariaDb": "Server=localhost;Port=3307;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
+    "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
+    "MariaDb": "Server=localhost;Port=3307;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
     "SqlServer": "Server=localhost,1433;Database=benchmark_test;User Id=sa;Password=Benchmark@123;Persist Security Info=True;TrustServerCertificate=True;",
     "PostgreSql": "Host=localhost;Port=5432;Database=benchmark_test;Username=postgres;Password=123456;",
     "Sqlite": "Data Source=benchmark_test.db;",
@@ -290,8 +292,8 @@ dotnet run -c Release
 ```json
 {
   "ConnectionStrings": {
-    "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
-    "MariaDb": "Server=localhost;Port=3307;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;",
+    "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
+    "MariaDb": "Server=localhost;Port=3307;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
     "SqlServer": "Data Source=localhost;Initial Catalog=benchmark_test;User ID=sa;Password=Benchmark@123;Persist Security Info=True;TrustServerCertificate=True;",
     "PostgreSql": "Host=localhost;Port=5432;Database=benchmark_test;Username=postgres;Password=123456;",
     "Sqlite": "Data Source=benchmark_test.db;",
@@ -428,6 +430,8 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [2026-01-12 11:41:38](results/benchmark_report_20260112_114138.md) - 基准测试报告
+- [2026-01-12 11:13:17](results/benchmark_report_20260112_111317.md) - 基准测试报告
 - [关系型数据库 PK 2026-01-12 09:26:01](results/benchmark_report_20260112_092601.md) - 基准测试报告
 - [MariaDB 2026-01-12 01:03:27](results/benchmark_report_20260112_010326.md) - 基准测试报告
 - [PG VS 其他 2026-01-11 11:05:26](results/benchmark_report_20260111_110526.md) - 基准测试报告

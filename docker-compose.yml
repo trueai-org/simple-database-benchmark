@@ -8,6 +8,7 @@ services:
     ports:
       - "3306:3306"
     command: >
+      --local-infile=1
       --innodb_buffer_pool_size=1G
       --innodb_redo_log_capacity=512M
 
@@ -20,6 +21,7 @@ services:
     ports:
       - "3307:3306"
     command: >
+      --local-infile=1
       --innodb_buffer_pool_size=1G
       --innodb_log_file_size=256M
 

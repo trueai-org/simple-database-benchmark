@@ -637,7 +637,7 @@ public class FreeSqlBenchmarkService : IBenchmarkService
                     .Select(i => GenerateTestEntityWithIndex(batch * batchSize + i))
                     .ToList();
 
-                // 如果是sqlserver 则使用 BulkCopy 插入以提升性能，否则将会非常慢 100 倍
+                // 如果是 SQLServer 则使用 BulkCopy 插入以提升性能，否则将会非常慢 100 倍
                 if (DatabaseName == "SQLServer")
                 {
                     await _freeSql.Insert(entities).ExecuteSqlBulkCopyAsync();
@@ -647,6 +647,17 @@ public class FreeSqlBenchmarkService : IBenchmarkService
                 {
                     await _freeSql.Insert(entities).ExecutePgCopyAsync();
                 }
+                // SQLite
+                else if (DatabaseName == "SQLite")
+                {
+                    _freeSql.Insert(entities).ExecuteSqliteBulkInsert();
+                }
+                // MySQL / MariaDB
+                else if (DatabaseName == "MySQL" || DatabaseName == "MariaDB")
+                {
+                    await _freeSql.Insert(entities).ExecuteMySqlBulkCopyAsync();
+                }
+                // 其他数据库使用普通批量插入
                 else
                 {
                     await _freeSql.Insert(entities).ExecuteAffrowsAsync();

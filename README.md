@@ -197,6 +197,7 @@ SimpleDatabaseBenchmark/
 - 至少一个数据库服务（MySQL/MariaDB/SQL Server/PostgreSQL/MongoDB）
 - SQLite 无需额外安装
 - MySQL/MariaDB 配置 1G buffer pool，并开启 local_infile
+- PostgreSQL shared_buffers 配置为 1G
 - SQL Server 如果不是通过脚本启动，请手动创建数据库 benchmark_test
 - 完全模拟生产环境
 - 初始化百万数据默认使用 BulkCopy 方式插入
@@ -482,6 +483,7 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [2026-01-12 13:26:28](results/benchmark_report_20260112_132628.md) - 基准测试报告
 - [2026-01-12 12:17:04](results/benchmark_report_20260112_121704.md) - 基准测试报告
 - [2026-01-12 11:41:38](results/benchmark_report_20260112_114138.md) - 基准测试报告
 - [2026-01-12 11:13:17](results/benchmark_report_20260112_111317.md) - 基准测试报告

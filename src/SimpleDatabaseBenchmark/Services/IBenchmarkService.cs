@@ -164,7 +164,7 @@ public interface IBenchmarkService
     /// <summary>
     /// 清理百万级测试数据
     /// </summary>
-    Task CleanupMillionDataAsync();
+    Task<BenchmarkResult> CleanupMillionDataAsync();
 
     #endregion 百万级数据索引测试
 

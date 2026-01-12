@@ -293,7 +293,7 @@ public class BenchmarkRunner
 
                 // 5. 清理数据
                 _logger.Information("[{Database}] ----- 清理百万级测试数据 -----", service.DatabaseName);
-                await service.CleanupMillionDataAsync();
+                _allResults.Add(await service.CleanupMillionDataAsync());
             }
             catch (Exception ex)
             {

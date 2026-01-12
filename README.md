@@ -2,86 +2,123 @@
 
 一个用于对比测试多种数据库性能的 .NET 控制台应用程序。
 
+📊 总结
+数据库	性能问题严重程度	主要问题
+SQL Server	🔴 严重	批量操作极慢、资源消耗巨大
+MySQL	🟠 中等	单条操作慢、排序/前缀查询极慢
+MariaDB	🟡 轻微	无索引查询慢、排序查询较慢
+PostgreSQL	🟢 无	综合性能最佳
+SQLite	🟢 无	轻量场景表现良好
+MongoDB	🟢 无	NoSQL 场景最佳
+
+
 ## 🏆 性能对比分析
 
 ### 📈 综合排名
 
 | 排名 | 数据库 | 综合评分 | 适用场景 |
 |------|--------|----------|----------|
-| 🥇 | **MongoDB** | ⭐⭐⭐⭐⭐ | 高并发写入、NoSQL 场景 |
-| 🥈 | **PostgreSQL** | ⭐⭐⭐⭐ | 通用场景、数据分析 |
+| 🥇 | **MongoDB** | ⭐⭐⭐⭐⭐ | 高并发写入、NoSQL 场景、10万/s |
+| 🥈 | **PostgreSQL** | ⭐⭐⭐⭐⭐ | 通用场景、数据分析 |
 | 🥉 | **SQLite** | ⭐⭐⭐⭐ | 轻量级、嵌入式、读多写少 |
 | 4 | **MariaDB** | ⭐⭐⭐⭐ | 略优于 MySQL |
-| 5 | **MySQL** | ⭐⭐⭐ | 传统 Web 应用、LAMP 架构 |
+| 5 | **MySQL** | ⭐⭐⭐⭐ | 传统 Web 应用、LAMP 架构 |
 | 6 | **SQL Server** | ⭐⭐⭐ | 企业级 Windows 生态 |
 
 ### 最终容器状态
 
 | NAME             | MEM USAGE / LIMIT     | AVG CPU % |
 |------------------|-----------------------|-----------|
-| bench_postgresql | 196.8MiB / 15.52GiB   | 20%       |
+| bench_postgresql | 80.43MiB / 15.52GiB   | 20%       |
 | bench_mysql      | 556.1MiB / 15.52GiB   | 16%       |
 | bench_mongodb    | 137.9MiB / 15.52GiB   | 32%       |
 | bench_sqlserver  | 3.251GiB / 15.52GiB   | 86%       |
-| bench_mariadb    | 842.9MiB / 15.52GiB   | 16%       |
+| bench_mariadb    | 175.7MiB / 15.52GiB   | 13%       |
 
-### 一、单条操作性能 (越小越好)
+### 关系型数据库 - 单条/批量/聚合/百万数据索引性能 (毫秒 - 越小越好)
 
-| 操作 | 🥇 第一名 | 🥈 第二名 | 🥉 第三名 | 最慢 |
-|------|---------|---------|---------|------|
-| **Insert** | MongoDB (251ms) | SQLServer (1131ms) | PostgreSQL (1557ms) | MySQL (4455ms) |
-| **Select** | SQLite (98ms) | PostgreSQL (319ms) | MongoDB (390ms) | SQLServer (984ms) |
-| **Update** | MongoDB (435ms) | PostgreSQL (1603ms) | SQLite (2094ms) | MySQL (5344ms) |
-| **Delete** | MongoDB (381ms) | SQLServer (1141ms) | PostgreSQL (1533ms) | MySQL (6283ms) |
+| 操作类型 | 操作名称 | MariaDB | MySQL | PostgreSQL | SQLServer | 最快 |
+|:---------|:---------|-------:|-------:|-------:|-------:|:-------|
+| Aggregation | GroupBy | 3.40 | 5.60 | 1.20 | 29.20 | **PostgreSQL** |
+| Aggregation | Statistics | 8.80 | 13.60 | 5.60 | 8.20 | **PostgreSQL** |
+| Batch | Delete | 63.40 | 110.00 | 18.00 | 210.40 | **PostgreSQL** |
+| Batch | Insert | 365.40 | 406.40 | 489.40 | 4833.60 | **MariaDB** |
+| Batch | Select | 25.80 | 28.20 | 75.40 | 15.80 | **SQLServer** |
+| Batch | Update | 253.00 | 324.60 | 369.20 | 2587.40 | **MariaDB** |
+| IndexQuery | ComplexCondition | 9773.00 | 1576.00 | 7705.00 | 1393.00 | **SQLServer** |
+| IndexQuery | CompositeIndex_RegionDept | 166.00 | 202.00 | 61.00 | 180.00 | **PostgreSQL** |
+| IndexQuery | CompositeIndex_StatusCatPri | 173.00 | 194.00 | 64.00 | 197.00 | **PostgreSQL** |
+| IndexQuery | NoIndex_FullScan | 5958.00 | 5964.00 | 522.00 | 2509.00 | **PostgreSQL** |
+| IndexQuery | OrderBy | 10451.00 | 47803.00 | 9271.00 | 4056.00 | **SQLServer** |
+| IndexQuery | Pagination | 300.00 | 339.00 | 74.00 | 230.00 | **PostgreSQL** |
+| IndexQuery | PrefixQuery_Name | 43227.00 | 61143.00 | 9938.00 | 15387.00 | **PostgreSQL** |
+| IndexQuery | PrimaryKey | 104.00 | 112.00 | 48.00 | 120.00 | **PostgreSQL** |
+| IndexQuery | RangeQuery_Date | 171.00 | 191.00 | 64.00 | 193.00 | **PostgreSQL** |
+| IndexQuery | RangeQuery_Salary | 172.00 | 200.00 | 96.00 | 189.00 | **PostgreSQL** |
+| IndexQuery | RangeQuery_Score | 175.00 | 191.00 | 113.00 | 185.00 | **PostgreSQL** |
+| IndexQuery | SingleIndex_Category | 165.00 | 190.00 | 733.00 | 112.00 | **SQLServer** |
+| IndexQuery | SingleIndex_Status | 168.00 | 183.00 | 1051.00 | 425.00 | **MariaDB** |
+| MillionData | Aggregation | 455.00 | 483.00 | 201.00 | 444.00 | **PostgreSQL** |
+| MillionData | GroupBy | 1802.00 | 2590.00 | 184.00 | 116.00 | **SQLServer** |
+| MillionData | PrepareData | 98749.00 | 98087.00 | 21006.00 | 27040.00 | **PostgreSQL** |
+| MillionData | Cleanup | 18964.00 | 22492.00 | 4987.00 | 22724.00 | **PostgreSQL** |
+| Single | Delete | 1532.00 | 3060.80 | 831.60 | 1537.80 | **PostgreSQL** |
+| Single | Insert | 1718.40 | 3226.40 | 962.40 | 1491.40 | **PostgreSQL** |
+| Single | Select | 1003.00 | 1062.40 | 393.40 | 1055.40 | **PostgreSQL** |
+| Single | Update | 2316.40 | 3344.20 | 966.40 | 3575.00 | **PostgreSQL** |
 
-**结论**: 单条操作中，**MongoDB 在写入操作（Insert/Update/Delete）上表现最优**，SQLite 在单条查询上速度最快。
+## 🔴 存在明显性能问题的数据库
 
----
+### 1. **SQL Server** - 最严重的性能问题
 
-### 二、批量操作性能 (越小越好)
+| 问题类型 | 具体表现 |
+|----------|----------|
+| **批量写入极慢** | Batch Insert: 4833.60ms（MariaDB 仅 365.40ms，**慢 13 倍**） |
+| **批量更新极慢** | Batch Update: 2587.40ms（MariaDB 仅 253.00ms，**慢 10 倍**） |
+| **单条更新慢** | Single Update: 3575.00ms（PostgreSQL 仅 966.40ms，**慢 3.7 倍**） |
+| **聚合分组慢** | GroupBy: 29.20ms（PostgreSQL 仅 1.20ms，**慢 24 倍**） |
+| **资源消耗巨大** | 内存占用 3.251GiB，CPU 占用 86%（远超其他数据库） |
 
-| 操作 | 🥇 第一名 | 🥈 第二名 | 🥉 第三名 | 最慢 |
-|------|---------|---------|---------|------|
-| **Insert** | MongoDB (96ms) | MySQL (503ms) | PostgreSQL (517ms) | SQLServer (7907ms) |
-| **Select** | SQLite (16ms) | PostgreSQL (28ms) | SQLServer (48ms) | MongoDB (60ms) |
-| **Update** | MongoDB (585ms) | SQLite (667ms) | MySQL (716ms) | SQLServer (10189ms) |
-| **Delete** | SQLite (38ms) | PostgreSQL (124ms) | MongoDB (141ms) | SQLServer (811ms) |
+### 2. **MySQL** - 中等性能问题
 
-**结论**: 批量操作中，**MongoDB 批量写入性能卓越**，**SQLite 在批量读取和删除上最快**。
+| 问题类型 | 具体表现 |
+|----------|----------|
+| **单条操作慢** | Single Insert: 3226.40ms（PostgreSQL 仅 962.40ms，**慢 3.4 倍**） |
+| **单条删除慢** | Single Delete: 3060.80ms（PostgreSQL 仅 831.60ms，**慢 3.7 倍**） |
+| **排序查询极慢** | OrderBy: 47803.00ms（SQL Server 4056.00ms，**慢 12 倍**） |
+| **前缀查询慢** | PrefixQuery_Name: 61143.00ms（PostgreSQL 9938.00ms，**慢 6 倍**） |
+| **百万数据准备慢** | PrepareData: 98087.00ms（PostgreSQL 21006.00ms，**慢 4.7 倍**） |
 
----
+### 3. **MariaDB** - 部分性能问题
 
-### 三、聚合查询性能 (越小越好)
+| 问题类型 | 具体表现 |
+|----------|----------|
+| **全表扫描慢** | NoIndex_FullScan: 5958.00ms（PostgreSQL 522.00ms，**慢 11 倍**） |
+| **排序查询慢** | OrderBy: 10451.00ms（SQL Server 4056.00ms，**慢 2.6 倍**） |
+| **前缀查询慢** | PrefixQuery_Name: 43227.00ms（PostgreSQL 9938.00ms，**慢 4.3 倍**） |
+| **百万数据准备慢** | PrepareData: 98749.00ms（PostgreSQL 21006.00ms，**慢 4.7 倍**） |
 
-| 操作 | 🥇 第一名 | 🥈 第二名 | 🥉 第三名 |
-|------|---------|---------|---------|
-| **GroupBy** | PostgreSQL (3. 2ms) | SQLite (3.4ms) | MongoDB (9.2ms) |
-| **Statistics** | SQLite (9.6ms) | PostgreSQL (10.8ms) | MongoDB (13.8ms) |
 
-**结论**: **PostgreSQL 和 SQLite 在聚合分析场景表现最优**。
+### 4. 性能表现优秀的数据库
 
----
+**PostgreSQL** - 综合最佳
+- 在 **28 项测试中赢得 20 项**
+- 全表扫描仅 522ms（其他数据库 2500-6000ms）
+- 百万数据准备仅 21006ms（MySQL/MariaDB 约 98000ms）
+- 内存占用仅 80.43MiB，CPU 仅 20%
 
-### 四、百万数据索引查询性能 (毫秒 - 越小越好)
+### 5. 综合评价
 
-| 操作类型 | 操作名称 | MongoDB | MySQL | PostgreSQL | SQLite | SQLServer | 最快 |
-|:---------|:---------|-------:|-------:|-------:|-------:|-------:|:-------|
-| IndexQuery | ComplexCondition | 3329.00 | 43911.00 | 3922.00 | 24742.00 | 1481.00 | **SQLServer** |
-| IndexQuery | CompositeIndex_RegionDept | 95.00 | 457.00 | 155.00 | 54.00 | 188.00 | **SQLite** |
-| IndexQuery | CompositeIndex_StatusCatPri | 99.00 | 867.00 | 256.00 | 71.00 | 184.00 | **SQLite** |
-| IndexQuery | NoIndex_FullScan | 4152.00 | 7324.00 | 531.00 | 3023.00 | 2634.00 | **PostgreSQL** |
-| IndexQuery | OrderBy | 36034.00 | 55827.00 | 3952.00 | 28808.00 | 4463.00 | **PostgreSQL** |
-| IndexQuery | Pagination | 204.00 | 345.00 | 75.00 | 90.00 | 231.00 | **PostgreSQL** |
-| IndexQuery | PrefixQuery_Name | 58.00 | 67525.00 | 8984.00 | 24050.00 | 15437.00 | **MongoDB** |
-| IndexQuery | PrimaryKey | 53.00 | 113.00 | 44.00 | 12.00 | 118.00 | **SQLite** |
-| IndexQuery | RangeQuery_Date | 102.00 | 418.00 | 122.00 | 76.00 | 201.00 | **SQLite** |
-| IndexQuery | RangeQuery_Salary | 106.00 | 406.00 | 113.00 | 95.00 | 186.00 | **SQLite** |
-| IndexQuery | RangeQuery_Score | 112.00 | 546.00 | 88.00 | 95.00 | 183.00 | **PostgreSQL** |
-| IndexQuery | SingleIndex_Category | 101.00 | 201.00 | 110.00 | 39.00 | 105.00 | **SQLite** |
-| IndexQuery | SingleIndex_Status | 109.00 | 188.00 | 62.00 | 42.00 | 108.00 | **SQLite** |
-| MillionData | Aggregation | 846.00 | 1550.00 | 282.00 | 366.00 | 457.00 | **PostgreSQL** |
-| MillionData | GroupBy | 1175.00 | 1707.00 | 198.00 | 5377.00 | 117.00 | **SQLServer** |
-| MillionData | PrepareData | 8559.00 | 78290.00 | 125044.00 | 103747.00 | 949774.00 | **MongoDB** |
+| 数据库 | 性能问题严重程度 | 主要问题 |
+|--------|------------------|----------|
+| **SQL Server** | 🔴 严重 | 批量操作极慢、资源消耗巨大 |
+| **MySQL** | 🟠 中等 | 单条操作慢、排序/前缀查询极慢 |
+| **MariaDB** | 🟡 轻微 | 无索引查询慢、排序查询较慢 |
+| **PostgreSQL** | 🟢 无 | 综合性能最佳 |
+| **SQLite** | 🟢 无 | 轻量场景表现良好 |
+| **MongoDB** | 🟢 无 | NoSQL 场景最佳 |
+
+**建议**：对于通用场景优先选择 **PostgreSQL**；如果必须使用 SQL Server，需要优化批量操作策略；MySQL/MariaDB 需要注意索引优化和排序查询的性能。
 
 ## 功能特点
 
@@ -308,7 +345,7 @@ dotnet run -c Release
 2. **创建索引**: 为各字段创建单字段和复合索引
 3. **索引查询测试**: 执行多种索引查询场景
 4. **聚合统计测试**: 百万级数据聚合和分组统计
-5. **数据清理**: 清理测试数据
+5. **数据清理**: 清理测试数据（记录性能指标）
 
 ### 索引查询测试场景
 
@@ -327,6 +364,7 @@ dotnet run -c Release
 | **排序查询** | OrderBy | 多字段排序查询 |
 | **复杂查询** | ComplexCondition | 多条件组合查询 |
 | **全表扫描** | NoIndex_FullScan | 无索引字段模糊查询（对比测试） |
+| **数据清理** | MillionData_Cleanup | 百万级数据清理（删除所有测试数据） |
 
 ### 创建的索引
 
@@ -400,6 +438,7 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [关系型数据库 PK 2026-01-12 09:26:01](results/benchmark_report_20260112_092601.md) - 基准测试报告
 - [MariaDB 2026-01-12 01:03:27](results/benchmark_report_20260112_010326.md) - 基准测试报告
 - [PG VS 其他 2026-01-11 11:05:26](results/benchmark_report_20260111_110526.md) - 基准测试报告
 - [PG VS SQLServer 2026-01-11 02:24:20](results/benchmark_report_20260111_022420.md) - 基准测试报告

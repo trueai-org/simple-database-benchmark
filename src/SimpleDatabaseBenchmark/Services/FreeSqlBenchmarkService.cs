@@ -1494,27 +1494,64 @@ public class FreeSqlBenchmarkService : IBenchmarkService
         return result;
     }
 
-    public async Task CleanupMillionDataAsync()
+    public async Task<BenchmarkResult> CleanupMillionDataAsync()
     {
-        _logger.Information("[{Database}] 清理百万级测试数据", DatabaseName);
-
-        //await _freeSql.Delete<TestEntity>().Where("1=1").ExecuteAffrowsAsync();
-
-        // 每次删除 1万
-        const int batchSize = 10000;
-        while (true)
+        var result = new BenchmarkResult
         {
-            var deleted = await _freeSql.Select<TestEntity>()
-                .Where(a => true)  // 或者你的条件
-                .Limit(batchSize)
-                .ToDelete()
-                .ExecuteAffrowsAsync();
+            DatabaseName = DatabaseName,
+            OperationType = "MillionData",
+            OperationName = "Cleanup",
+            RecordCount = 0,
+            TestTime = DateTime.Now
+        };
 
-            if (deleted == 0)
-                break;
+        using var monitor = new PerformanceMonitor();
+
+        try
+        {
+            _logger.Information("[{Database}] 清理百万级测试数据", DatabaseName);
+
+            monitor.Start();
+
+            // 每次删除 1万
+            const int batchSize = 10000;
+            long totalDeleted = 0;
+            while (true)
+            {
+                var deleted = await _freeSql.Select<TestEntity>()
+                    .Where(a => true)  // 或者你的条件
+                    .Limit(batchSize)
+                    .ToDelete()
+                    .ExecuteAffrowsAsync();
+
+                if (deleted == 0)
+                    break;
+
+                totalDeleted += deleted;
+            }
+
+            monitor.Stop();
+
+            result.RecordCount = (int)totalDeleted;
+            result.ElapsedMilliseconds = monitor.ElapsedMilliseconds;
+            result.OperationsPerSecond = totalDeleted > 0 ? monitor.CalculateOperationsPerSecond((int)totalDeleted) : 0;
+            result.CpuUsagePercent = monitor.CpuUsagePercent;
+            result.MemoryUsedBytes = monitor.MemoryUsedBytes;
+            result.MemoryUsedFormatted = monitor.MemoryUsedFormatted;
+            result.IsSuccess = true;
+
+            _logger.Information("[{Database}] 百万级测试数据清理完成, 删除记录数: {Count}, 耗时: {Elapsed}ms, OPS: {OPS}",
+                DatabaseName, totalDeleted, result.ElapsedMilliseconds, result.OperationsPerSecond);
+        }
+        catch (Exception ex)
+        {
+            monitor.Stop();
+            result.IsSuccess = false;
+            result.ErrorMessage = ex.Message;
+            _logger.Error(ex, "[{Database}] 百万级测试数据清理失败", DatabaseName);
         }
 
-        _logger.Information("[{Database}] 百万级测试数据清理完成", DatabaseName);
+        return result;
     }
 
     #endregion 百万级数据索引测试

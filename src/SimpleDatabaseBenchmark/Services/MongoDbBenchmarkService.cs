@@ -1,8 +1,8 @@
-﻿using SimpleDatabaseBenchmark.Models;
-using SimpleDatabaseBenchmark.Utils;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Bson;
 using Serilog;
+using SimpleDatabaseBenchmark.Models;
+using SimpleDatabaseBenchmark.Utils;
 
 namespace SimpleDatabaseBenchmark.Services;
 
@@ -1566,12 +1566,53 @@ public class MongoDbBenchmarkService : IBenchmarkService
         return result;
     }
 
-    public async Task CleanupMillionDataAsync()
+    public async Task<BenchmarkResult> CleanupMillionDataAsync()
     {
-        _logger.Information("[{Database}] 清理百万级测试数据", DatabaseName);
-        await _collection.DeleteManyAsync(FilterDefinition<MongoTestEntity>.Empty);
-        _sequenceId = 0;
-        _logger.Information("[{Database}] 百万级测试数据清理完成", DatabaseName);
+        var result = new BenchmarkResult
+        {
+            DatabaseName = DatabaseName,
+            OperationType = "MillionData",
+            OperationName = "Cleanup",
+            RecordCount = 0,
+            TestTime = DateTime.Now
+        };
+
+        using var monitor = new PerformanceMonitor();
+
+        try
+        {
+            _logger.Information("[{Database}] 清理百万级测试数据", DatabaseName);
+
+            // 先统计要删除的记录数
+            var countBefore = await _collection.CountDocumentsAsync(FilterDefinition<MongoTestEntity>.Empty);
+
+            monitor.Start();
+
+            await _collection.DeleteManyAsync(FilterDefinition<MongoTestEntity>.Empty);
+            _sequenceId = 0;
+
+            monitor.Stop();
+
+            result.RecordCount = (int)countBefore;
+            result.ElapsedMilliseconds = monitor.ElapsedMilliseconds;
+            result.OperationsPerSecond = countBefore > 0 ? monitor.CalculateOperationsPerSecond((int)countBefore) : 0;
+            result.CpuUsagePercent = monitor.CpuUsagePercent;
+            result.MemoryUsedBytes = monitor.MemoryUsedBytes;
+            result.MemoryUsedFormatted = monitor.MemoryUsedFormatted;
+            result.IsSuccess = true;
+
+            _logger.Information("[{Database}] 百万级测试数据清理完成, 删除记录数: {Count}, 耗时: {Elapsed}ms, OPS: {OPS}",
+                DatabaseName, countBefore, result.ElapsedMilliseconds, result.OperationsPerSecond);
+        }
+        catch (Exception ex)
+        {
+            monitor.Stop();
+            result.IsSuccess = false;
+            result.ErrorMessage = ex.Message;
+            _logger.Error(ex, "[{Database}] 百万级测试数据清理失败", DatabaseName);
+        }
+
+        return result;
     }
 
     #endregion 百万级数据索引测试

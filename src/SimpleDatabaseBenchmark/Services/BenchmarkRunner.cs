@@ -137,6 +137,23 @@ public class BenchmarkRunner
             }
         }
 
+        // Oracle
+        var oracleConnStr = _configuration.GetConnectionString("Oracle");
+        if (!string.IsNullOrEmpty(oracleConnStr))
+        {
+            try
+            {
+                var oracleService = new FreeSqlBenchmarkService("Oracle", DataType.Oracle, oracleConnStr);
+                await oracleService.InitializeAsync();
+                _services.Add(oracleService);
+                _logger.Information("Oracle 服务初始化成功");
+            }
+            catch (Exception ex)
+            {
+                _logger.Warning(ex, "Oracle 服务初始化失败，跳过该数据库测试");
+            }
+        }
+
         _logger.Information("已初始化 {Count} 个数据库服务", _services.Count);
     }
 

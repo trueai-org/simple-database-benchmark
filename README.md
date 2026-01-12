@@ -1,6 +1,6 @@
 ﻿# SimpleDatabaseBenchmark - 数据库基准测试工具
 
-数据库性能对比测试工具，支持 SQLite、MySQL、MariaDB、PostgreSQL、SQL Server、MongoDB 等多种数据库。
+数据库性能对比测试工具，支持 SQLite、MySQL、MariaDB、PostgreSQL、SQL Server、MongoDB、Oracle 等多种数据库。
 
 一款轻量级 .NET 控制台工具，帮助开发者快速对比不同数据库的读写性能，一键生成基准测试报告，让数据库选型更有据可依。
 
@@ -117,7 +117,7 @@
 
 ## 功能特点
 
-- **支持多种数据库**: MySQL, MariaDB, SQL Server, PostgreSQL, SQLite, MongoDB
+- **支持多种数据库**: MySQL, MariaDB, SQL Server, PostgreSQL, SQLite, MongoDB, Oracle
 - **多种测试场景**: 
   - 单条增删改查 (CRUD)
   - 批量增删改查
@@ -141,7 +141,7 @@
 ## 技术栈
 
 - **.NET 8.0**
-- **FreeSql**: MySQL, MariaDB, SQL Server, PostgreSQL, SQLite 的 ORM
+- **FreeSql**: MySQL, MariaDB, SQL Server, PostgreSQL, SQLite, Oracle 的 ORM
 - **MongoDB Driver**: MongoDB 官方驱动
 - **Serilog**: 日志框架
 
@@ -172,7 +172,7 @@ SimpleDatabaseBenchmark/
 - PostgreSQL shared_buffers 配置为 1G
 - SQL Server 如果不是通过脚本启动，请手动创建数据库 benchmark_test
 - 完全模拟生产环境
-- 初始化百万数据默认使用 BulkCopy 方式插入
+- 初始化百万数据默认使用 BulkCopy 方式插入，Oracle 采用批量插入方式
 
 ### 2. 启动数据库
 
@@ -198,6 +198,7 @@ chmod +x start.sh
 | SQL Server | localhost | 1433 | sa | Benchmark@123 | benchmark_test |
 | PostgreSQL | localhost | 5432 | postgres | 123456 | benchmark_test |
 | MongoDB | localhost | 27017 | - | - | benchmark_test |
+| Oracle | localhost | 1521 | SYSTEM | 123456 | FREEPDB1 |
 | SQLite | - | - | - | - | benchmark_test.db |
 
 编辑 `appsettings.json` 文件，配置各数据库的连接字符串：
@@ -210,7 +211,8 @@ chmod +x start.sh
     "SqlServer": "Server=localhost,1433;Database=benchmark_test;User Id=sa;Password=Benchmark@123;Persist Security Info=True;TrustServerCertificate=True;",
     "PostgreSql": "Host=localhost;Port=5432;Database=benchmark_test;Username=postgres;Password=123456;",
     "Sqlite": "Data Source=benchmark_test.db;",
-    "MongoDb": "mongodb://localhost:27017"
+    "MongoDb": "mongodb://localhost:27017",
+    "Oracle": "Data Source=localhost:1521/FREEPDB1;User Id=SYSTEM;Password=123456;"
   }
 }
 ```
@@ -305,7 +307,8 @@ dotnet run -c Release
     "SqlServer": "Data Source=localhost;Initial Catalog=benchmark_test;User ID=sa;Password=Benchmark@123;Persist Security Info=True;TrustServerCertificate=True;",
     "PostgreSql": "Host=localhost;Port=5432;Database=benchmark_test;Username=postgres;Password=123456;",
     "Sqlite": "Data Source=benchmark_test.db;",
-    "MongoDb": "mongodb://localhost:27017"
+    "MongoDb": "mongodb://localhost:27017",
+    "Oracle": "Data Source=localhost:1521/FREEPDB1;User Id=SYSTEM;Password=123456;"
   },
   "BenchmarkSettings": {
     "SingleOperationCount": 1000,
@@ -455,6 +458,10 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [2026-01-12 18:31:35](results/benchmark_report_20260112_183135.md) - 基准测试报告
+- [2026-01-12 18:19:07](results/benchmark_report_20260112_181907.md) - 基准测试报告
+- [2026-01-12 17:40:51](results/benchmark_report_20260112_174051.md) - 基准测试报告
+- [2026-01-12 17:38:17](results/benchmark_report_20260112_173817.md) - 基准测试报告
 - [2026-01-12 14:04:08](results/benchmark_report_20260112_140408.md) - 基准测试报告
 - [2026-01-12 13:26:28](results/benchmark_report_20260112_132628.md) - 基准测试报告
 - [2026-01-12 12:17:04](results/benchmark_report_20260112_121704.md) - 基准测试报告
@@ -471,6 +478,4 @@ MIT License
 - [2025-12-09 12:41:11](results/benchmark_report_20251209_124111.md) - 基准测试报告
 - [2025-12-09 12:23:47](results/benchmark_report_20251209_122347.md) - 基准测试报告
 - [2025-12-09 12:07:07](results/benchmark_report_20251209_120707.md) - 基准测试报告
-- [2025-12-09 09:22:18](results/benchmark_report_20251209_092218.md) - 基准测试报告
-- [2025-12-08 18:21:00](results/benchmark_report_20251208_182100.md) - 基准测试报告
 <!-- BENCHMARK_RESULTS_END -->

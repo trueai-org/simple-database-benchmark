@@ -33,6 +33,10 @@ services:
       MSSQL_SA_PASSWORD: Benchmark@123
     ports:
       - "1433:1433"
+    deploy:
+      resources:
+        limits:
+          memory: 2g
 
   postgresql:
     image: postgres:18-alpine
@@ -52,3 +56,14 @@ services:
     container_name: bench_mongodb
     ports:
       - "27017:27017"
+
+  oracle:
+    image: gvenzl/oracle-free:23-slim
+    container_name: bench_oracle
+    environment:
+      ORACLE_PASSWORD: 123456
+      APP_USER: benchmark
+      APP_USER_PASSWORD: 123456
+    ports:
+      - "1521:1521"
+    shm_size: 2g

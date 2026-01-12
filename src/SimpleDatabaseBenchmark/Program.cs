@@ -153,7 +153,7 @@ internal class Program
 ║                                                                  ║
 ║              Database Benchmark Tool v1.0. 0                     ║
 ║                                                                  ║
-║     Databases: MySQL | MariaDB | SQL Server | PostgreSQL | SQLite | MongoDB║
+║     Databases: MySQL | MariaDB | SQL Server | PostgreSQL | SQLite | MongoDB | Oracle║
 ║     ORM: FreeSql (SQL) | MongoDB.Driver (NoSQL)                  ║
 ║     Logging: Serilog                                             ║
 ║                                                                  ║

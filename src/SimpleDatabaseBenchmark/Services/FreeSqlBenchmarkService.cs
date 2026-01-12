@@ -553,16 +553,18 @@ public class FreeSqlBenchmarkService : IBenchmarkService
 
             monitor.Start();
 
+            // Oracle avg 精度较高特殊处理浮点小数位，避免 NUMBER 类型溢出
+
             var groupResults = await _freeSql.Select<TestEntity>()
-                .GroupBy(x => x.Department)
-                .ToListAsync(g => new GroupAggregationResult
-                {
-                    Department = g.Key,
-                    Count = (int)g.Count(),
-                    TotalSalary = g.Sum(g.Value.Salary),
-                    AvgSalary = g.Avg(g.Value.Salary),
-                    AvgAge = (int)g.Avg(g.Value.Age)
-                });
+                 .GroupBy(x => x.Department)
+                 .ToListAsync(g => new GroupAggregationResult
+                 {
+                     Department = g.Key,
+                     Count = g.Count(),
+                     TotalSalary = g.Sum(g.Value.Salary),
+                     AvgSalary = Math.Round(g.Avg(g.Value.Salary), 2),
+                     AvgAge = (int)Math.Round(g.Avg(g.Value.Age), 2)
+                 });
 
             monitor.Stop();
 
@@ -657,6 +659,19 @@ public class FreeSqlBenchmarkService : IBenchmarkService
                 {
                     await _freeSql.Insert(entities).ExecuteMySqlBulkCopyAsync();
                 }
+                // 有错误
+                //// Oracle
+                //else if (DatabaseName == "Oracle")
+                //{
+                //    _freeSql.Insert(entities).ExecuteOracleBulkCopy();
+                //}
+
+                //// Oracle - 使用批量插入（避免 ORA-39826 直接路径加载错误）
+                //else if (DatabaseName == "Oracle")
+                //{
+                //    await _freeSql.Insert(entities).NoneParameter().ExecuteAffrowsAsync();
+                //}
+
                 // 其他数据库使用普通批量插入
                 else
                 {
@@ -1395,7 +1410,7 @@ public class FreeSqlBenchmarkService : IBenchmarkService
                 {
                     Department = g.Key,
                     Count = g.Count(),
-                    AvgSalary = g.Avg(g.Value.Salary),
+                    AvgSalary = Math.Round(g.Avg(g.Value.Salary), 2),
                     TotalSalary = g.Sum(g.Value.Salary)
                 });
 
@@ -1406,7 +1421,7 @@ public class FreeSqlBenchmarkService : IBenchmarkService
                 {
                     Category = g.Key,
                     Count = g.Count(),
-                    AvgScore = g.Avg(g.Value.Score)
+                    AvgScore = Math.Round(g.Avg(g.Value.Score), 2)
                 });
 
             // 按地区分组统计
@@ -1416,7 +1431,7 @@ public class FreeSqlBenchmarkService : IBenchmarkService
                 {
                     Region = g.Key,
                     Count = g.Count(),
-                    AvgQuantity = g.Avg(g.Value.Quantity)
+                    AvgQuantity = Math.Round(g.Avg(g.Value.Quantity), 2)
                 });
 
             // 按状态分组统计

@@ -1,6 +1,6 @@
 ﻿# SimpleDatabaseBenchmark - 数据库基准测试工具
 
-数据库性能对比测试工具 | 支持 SQLite、MySQL、MariaDB、PostgreSQL、SQL Server、MongoDB 等多种数据库。
+数据库性能对比测试工具，支持 SQLite、MySQL、MariaDB、PostgreSQL、SQL Server、MongoDB 等多种数据库。
 
 一款轻量级 .NET 控制台工具，帮助开发者快速对比不同数据库的读写性能，一键生成基准测试报告，让数据库选型更有据可依。
 

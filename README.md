@@ -4,8 +4,6 @@
 
 ## 🏆 性能对比分析
 
-*提醒*：MySQL/MariaDB 配置 1G buffer pool，并开启 local_infile
-
 ### 📈 综合排名
 
 | 排名 | 数据库 | 综合评分 | 适用场景 |
@@ -21,11 +19,11 @@
 
 | NAME             | MEM USAGE / LIMIT     | AVG CPU % |
 |------------------|-----------------------|-----------|
-| bench_postgresql | 80.43MiB / 15.52GiB   | 20%       |
-| bench_mysql      | 556.1MiB / 15.52GiB   | 16%       |
-| bench_mongodb    | 137.9MiB / 15.52GiB   | 32%       |
-| bench_sqlserver  | 3.251GiB / 15.52GiB   | 86%       |
-| bench_mariadb    | 175.7MiB / 15.52GiB   | 13%       |
+| bench_postgresql | 313.7MiB / 15.52GiB   | 20%       |
+| bench_mysql      | 1.342GiB / 15.52GiB   | 16%       |
+| bench_mongodb    | 904.8MiB / 15.52GiB   | 32%       |
+| bench_sqlserver  | 4.582GiB / 15.52GiB   | 86%       |
+| bench_mariadb    | 798.2MiB / 15.52GiB   | 13%       |
 
 ### 关系型数据库 - 单条/批量/聚合/百万数据索引性能 (毫秒 - 越小越好)
 
@@ -52,12 +50,45 @@
 | IndexQuery | SingleIndex_Status | 168.00 | 183.00 | 1051.00 | 425.00 | **MariaDB** |
 | MillionData | Aggregation | 455.00 | 483.00 | 201.00 | 444.00 | **PostgreSQL** |
 | MillionData | GroupBy | 1802.00 | 2590.00 | 184.00 | 116.00 | **SQLServer** |
-| MillionData | PrepareData | 98749.00 | 98087.00 | 21006.00 | 27040.00 | **PostgreSQL** |
+| MillionData | PrepareData | 23937.00 | 31095.00 | 21006.00 | 27040.00 | **PostgreSQL** |
 | MillionData | Cleanup | 18964.00 | 22492.00 | 4987.00 | 22724.00 | **PostgreSQL** |
 | Single | Delete | 1532.00 | 3060.80 | 831.60 | 1537.80 | **PostgreSQL** |
 | Single | Insert | 1718.40 | 3226.40 | 962.40 | 1491.40 | **PostgreSQL** |
 | Single | Select | 1003.00 | 1062.40 | 393.40 | 1055.40 | **PostgreSQL** |
 | Single | Update | 2316.40 | 3344.20 | 966.40 | 3575.00 | **PostgreSQL** |
+
+### 所有数据库 - 单条/批量/聚合/百万数据索引性能 (毫秒 - 越小越好)
+
+| 操作类型 | 操作名称 | MariaDB | MongoDB | MySQL | PostgreSQL | SQLite | SQLServer | 最快 |
+|:---------|:---------|-------:|-------:|-------:|-------:|-------:|-------:|:-------|
+| Aggregation | GroupBy | 3.00 | 3.40 | 4.80 | 1.40 | 2.00 | 29.60 | **PostgreSQL** |
+| Aggregation | Statistics | 6.20 | 7.40 | 10.20 | 5.80 | 1.80 | 8.20 | **SQLite** |
+| Batch | Delete | 59.40 | 38.00 | 101.20 | 20.40 | 52.80 | 213.00 | **PostgreSQL** |
+| Batch | Insert | 1646.20 | 43.40 | 1576.80 | 651.80 | 699.60 | 4820.40 | **MongoDB** |
+| Batch | Select | 12.20 | 31.00 | 12.60 | 8.00 | 13.80 | 14.60 | **PostgreSQL** |
+| Batch | Update | 1538.60 | 205.00 | 1539.80 | 451.00 | 423.60 | 2593.40 | **MongoDB** |
+| IndexQuery | ComplexCondition | 9216.00 | 4153.00 | 1447.00 | 308.00 | 42055.00 | 1536.00 | **PostgreSQL** |
+| IndexQuery | CompositeIndex_RegionDept | 82.00 | 110.00 | 92.00 | 63.00 | 103.00 | 194.00 | **PostgreSQL** |
+| IndexQuery | CompositeIndex_StatusCatPri | 89.00 | 118.00 | 108.00 | 133.00 | 147.00 | 218.00 | **MariaDB** |
+| IndexQuery | NoIndex_FullScan | 5584.00 | 4439.00 | 6337.00 | 588.00 | 3360.00 | 2527.00 | **PostgreSQL** |
+| IndexQuery | OrderBy | 10242.00 | 35976.00 | 47429.00 | 4579.00 | 58981.00 | 4129.00 | **SQLServer** |
+| IndexQuery | Pagination | 168.00 | 221.00 | 244.00 | 74.00 | 112.00 | 231.00 | **PostgreSQL** |
+| IndexQuery | PrefixQuery_Name | 42596.00 | 62.00 | 63630.00 | 9058.00 | 43427.00 | 15478.00 | **MongoDB** |
+| IndexQuery | PrimaryKey | 63.00 | 57.00 | 52.00 | 50.00 | 23.00 | 113.00 | **SQLite** |
+| IndexQuery | RangeQuery_Date | 86.00 | 119.00 | 101.00 | 121.00 | 164.00 | 215.00 | **MariaDB** |
+| IndexQuery | RangeQuery_Salary | 89.00 | 126.00 | 102.00 | 114.00 | 194.00 | 208.00 | **MariaDB** |
+| IndexQuery | RangeQuery_Score | 88.00 | 131.00 | 108.00 | 84.00 | 185.00 | 207.00 | **PostgreSQL** |
+| IndexQuery | SingleIndex_Category | 76.00 | 138.00 | 86.00 | 113.00 | 72.00 | 114.00 | **SQLite** |
+| IndexQuery | SingleIndex_Status | 75.00 | 133.00 | 94.00 | 61.00 | 76.00 | 436.00 | **PostgreSQL** |
+| MillionData | Aggregation | 450.00 | 858.00 | 463.00 | 246.00 | 445.00 | 447.00 | **PostgreSQL** |
+| MillionData | Cleanup | 18201.00 | 21513.00 | 22950.00 | 2874.00 | 123834.00 | 22662.00 | **PostgreSQL** |
+| MillionData | GroupBy | 1749.00 | 1147.00 | 2577.00 | 213.00 | 8377.00 | 115.00 | **SQLServer** |
+| MillionData | PrepareData | 23937.00 | 10714.00 | 31095.00 | 35022.00 | 150564.00 | 30819.00 | **MongoDB** |
+| Single | Delete | 1110.40 | 544.40 | 2713.00 | 882.80 | 2992.60 | 1630.60 | **MongoDB** |
+| Single | Insert | 1243.80 | 399.60 | 2780.40 | 1016.60 | 3127.80 | 1564.60 | **MongoDB** |
+| Single | Select | 518.60 | 539.40 | 582.40 | 409.40 | 167.20 | 1087.40 | **SQLite** |
+| Single | Update | 1421.80 | 604.60 | 2812.60 | 1026.20 | 3041.20 | 3723.20 | **MongoDB** |
+
 
 ## 🔴 存在明显性能问题的数据库
 
@@ -160,11 +191,15 @@ SimpleDatabaseBenchmark/
 
 ## 快速开始
 
-### 1. 环境要求
+### 1. 环境要求/准备
 
-- .NET 8. 0 SDK
-- 至少一个数据库服务（MySQL/SQL Server/PostgreSQL/MongoDB）
+- .NET 8.0
+- 至少一个数据库服务（MySQL/MariaDB/SQL Server/PostgreSQL/MongoDB）
 - SQLite 无需额外安装
+- MySQL/MariaDB 配置 1G buffer pool，并开启 local_infile
+- SQL Server 如果不是通过脚本启动，请手动创建数据库 benchmark_test
+- 完全模拟生产环境
+- 初始化百万数据默认使用 BulkCopy 方式插入
 
 ### 2. 启动数据库
 
@@ -430,6 +465,7 @@ MIT License
 ## 测试结果历史
 
 <!-- BENCHMARK_RESULTS_START -->
+- [2026-01-12 12:17:04](results/benchmark_report_20260112_121704.md) - 基准测试报告
 - [2026-01-12 11:41:38](results/benchmark_report_20260112_114138.md) - 基准测试报告
 - [2026-01-12 11:13:17](results/benchmark_report_20260112_111317.md) - 基准测试报告
 - [关系型数据库 PK 2026-01-12 09:26:01](results/benchmark_report_20260112_092601.md) - 基准测试报告

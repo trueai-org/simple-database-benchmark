@@ -660,18 +660,36 @@ public class FreeSqlBenchmarkService : IBenchmarkService
                     await _freeSql.Insert(entities).ExecuteMySqlBulkCopyAsync();
                 }
                 // 有错误
-                //// Oracle
-                //else if (DatabaseName == "Oracle")
-                //{
-                //    _freeSql.Insert(entities).ExecuteOracleBulkCopy();
-                //}
+                // Oracle
+                else if (DatabaseName == "Oracle")
+                {
+                    //_freeSql.Insert(entities).ExecuteOracleBulkCopy();
 
-                //// Oracle - 使用批量插入（避免 ORA-39826 直接路径加载错误）
-                //else if (DatabaseName == "Oracle")
-                //{
-                //    await _freeSql.Insert(entities).NoneParameter().ExecuteAffrowsAsync();
-                //}
+                    // 禁用触发器以支持 Direct Path Load（使用带引号的小写表名）
+                    //await _freeSql.Ado.ExecuteNonQueryAsync("ALTER TABLE \"test_entity\" DISABLE ALL TRIGGERS");
+                    //try
+                    //{
+                    //    _freeSql.Insert(entities).ExecuteOracleBulkCopy();
+                    //}
+                    //finally
+                    //{
+                    //    // 重新启用触发器
+                    //    await _freeSql.Ado.ExecuteNonQueryAsync("ALTER TABLE \"test_entity\" ENABLE ALL TRIGGERS");
+                    //}
 
+                    // OracleBulkCopy 使用 Direct Path Load，对有触发器/约束的表不支持
+                    // 使用 NoneParameter 生成拼接 SQL 批量插入
+                    //await _freeSql.Insert(entities).NoneParameter().ExecuteAffrowsAsync();
+
+                    // 手动赋值
+                    //foreach (var entity in entities)
+                    //{
+                    //    entity.Id = id++;
+                    //}
+                    //_freeSql.Insert(entities).ExecuteOracleBulkCopy();
+
+                    await _freeSql.Insert(entities).ExecuteAffrowsAsync();
+                }
                 // 其他数据库使用普通批量插入
                 else
                 {

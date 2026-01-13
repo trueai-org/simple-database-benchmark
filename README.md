@@ -209,8 +209,8 @@ chmod +x start.sh
 ```json
 {
   "ConnectionStrings": {
-    "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
-    "MariaDb": "Server=localhost;Port=3307;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
+    "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
+    "MariaDb": "Server=localhost;Port=3307;Database=benchmark_test;Uid=root;Pwd=123456;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
     "SqlServer": "Server=localhost,1433;Database=benchmark_test;User Id=sa;Password=Benchmark@123;Persist Security Info=True;TrustServerCertificate=True;",
     "PostgreSql": "Host=localhost;Port=5432;Database=benchmark_test;Username=postgres;Password=123456;",
     "Sqlite": "Data Source=benchmark_test.db;",
@@ -305,8 +305,8 @@ dotnet run -c Release
 ```json
 {
   "ConnectionStrings": {
-    "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
-    "MariaDb": "Server=localhost;Port=3307;Database=benchmark_test;Uid=root;Pwd=123456;Charset=utf8mb4;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
+    "MySql": "Server=localhost;Port=3306;Database=benchmark_test;Uid=root;Pwd=123456;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
+    "MariaDb": "Server=localhost;Port=3307;Database=benchmark_test;Uid=root;Pwd=123456;AllowPublicKeyRetrieval=true;AllowLoadLocalInfile=true;",
     "SqlServer": "Data Source=localhost;Initial Catalog=benchmark_test;User ID=sa;Password=Benchmark@123;Persist Security Info=True;TrustServerCertificate=True;",
     "PostgreSql": "Host=localhost;Port=5432;Database=benchmark_test;Username=postgres;Password=123456;",
     "Sqlite": "Data Source=benchmark_test.db;",

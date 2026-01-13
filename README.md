@@ -14,10 +14,10 @@
 
 | 排名 | 数据库 | 综合评分 | 适用场景 |
 |------|--------|----------|----------|
-| 🥇 | **MongoDB 8.0** | ⭐⭐⭐⭐⭐ | 高并发写入、NoSQL 场景、10万+/s |
+| 🥇 | **MongoDB 8.2** | ⭐⭐⭐⭐⭐ | 高并发写入、NoSQL 场景、10万+/s |
 | 🥈 | **PostgreSQL 18** | ⭐⭐⭐⭐⭐ | 通用场景、数据分析 |
 | 🥉 | **SQLite 3** | ⭐⭐⭐⭐ | 轻量级、嵌入式、读多写少 |
-| 4 | **MariaDB 11** | ⭐⭐⭐⭐ | 略优于 MySQL |
+| 4 | **MariaDB 11.8** | ⭐⭐⭐⭐ | 略优于 MySQL |
 | 5 | **MySQL 8.4** | ⭐⭐⭐⭐ | 传统 Web 应用 |
 | 6 | **SQL Server 2022** | ⭐⭐⭐ | 企业级 Windows 生态 |
 | 7 | **Oracle 23** | ⭐⭐⭐ | 大型企业应用 |
@@ -482,3 +482,13 @@ MIT License
 - [10万数据 - 2025-12-09 13:22:41](results/benchmark_report_20251209_132241.md) - 基准测试报告
 - [2025-12-09 12:41:11](results/benchmark_report_20251209_124111.md) - 基准测试报告
 <!-- BENCHMARK_RESULTS_END -->
+
+## 数据库运维/备份
+
+- [tiredofit/docker-db-backup](https://github.com/tiredofit/docker-db-backup)
+- [Databasus - Databases backup tool (PostgreSQL, MySQL, MongoDB)](https://github.com/databasus/databasus)
+- [Percona XtraBackup - MySQL](https://github.com/percona/percona-xtrabackup)
+- [WAL-G](https://github.com/wal-g/wal-g)
+- [pgBackRest - Reliable PostgreSQL Backup & Restore](https://github.com/pgbackrest/pgbackrest)
+- [PG Back Web](https://github.com/eduardolat/pgbackweb)
+- [Percona Monitoring and Management](https://github.com/percona/pmm/)

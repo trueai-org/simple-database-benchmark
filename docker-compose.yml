@@ -17,7 +17,7 @@ services:
           memory: 8g
 
   mariadb:
-    image: mariadb:11
+    image: mariadb:11.8
     container_name: bench_mariadb
     environment:
       MARIADB_ROOT_PASSWORD: 123456
@@ -64,7 +64,7 @@ services:
           memory: 8g
 
   mongodb:
-    image: mongo:8.0
+    image: mongo:8.2
     container_name: bench_mongodb
     ports:
       - "27017:27017"

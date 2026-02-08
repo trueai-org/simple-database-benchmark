@@ -101,7 +101,34 @@
 | **前缀查询慢** | PrefixQuery_Name: 43227.00ms（PostgreSQL 9938.00ms，**慢 4.3 倍**） |
 
 
-**说明**：MariaDB 分页慢可以采取延迟加载，查询时不要回表，根据 ID 查询结果后再批量获取数据，就不会有性能问题了。
+### 4. **MongoDB** - Count 最大短板
+
+- **统计性能较差**：在超过百万数据量时，精确 Count 操作远慢于关系型数据库，聚合分析能力弱
+- **弱事务**：无法替代 RDBMS 处理转账、订单等业务
+- **弱 JOIN 支持**：多表关联查询是灾难
+- **内存依赖极强**：数据量超过内存 → 性能断崖式下降
+- **数据一致性弱**：只保证主节点写入，多节点可能丢数据
+- **存储空间膨胀**：实际存储空间比 SQL 数据库大 2-5 倍
+
+```
+MongoDB 批量写入所有数据库中最快！
+MongoDB 超百万数据，统计性能严重下降！
+
+特点：写多读少、数据量大、不需要关联查询
+注意：不要精确分页、不需要复杂统计分析、不需要精确统计数量，因此 Count 一般查询最大返回 10万+ 记录即可
+// _collection.CountDocuments(filter, new CountOptions() { Limit = 100000 });
+// _collection.Find(filter, new FindOptions { AllowDiskUse = true }).Take(100000).Count();
+// _collection.Find(filter, new FindOptions { AllowDiskUse = true }).Project(c => c.Id).Skip(100,000,000).Limit(100).ToList();
+
+适合：
+  📊 应用日志 / 访问日志 / 审计日志      
+  📈 用户行为追踪 / 埋点数据            
+  🔔 IoT 传感器数据采集                
+  📝 API 请求记录                     
+  💬 聊天消息存储              
+  🎮 游戏事件流  
+  📄 全文搜索
+```
 
 ### 4. 性能表现优秀的数据库
 
